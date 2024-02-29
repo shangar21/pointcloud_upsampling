@@ -1,0 +1,7 @@
+Idea:
+Given a sparse point cloud, we want to output a dense point cloud that is consistent with the input. 
+We use a neural network to predict the dense point cloud. 
+We also want this to be done fast.
+
+Implementation:
+test hypothesis: Adding points to child of deep octree will upscale point cloud well, or atleast close enough for a network to complete the rest, perhaps a pretrined diffusion network, or a GAN since the work needed to be done is minimal.
