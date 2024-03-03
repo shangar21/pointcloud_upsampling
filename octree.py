@@ -21,6 +21,22 @@ class OctreeNode():
         self.depth = 0
         self.center = center 
         self.is_leaf = True
+        self.num_points = 0
+        self.parent = None
+
+    def __eq__(self, __value: object) -> bool:
+        if not isinstance(__value, OctreeNode):
+            return False
+
+        if self.point is None and __value.point is not None:
+            return False
+
+        if self.point is not None and __value.point is None:
+            return False
+
+        return np.array_equal(self.point, __value.point) and\
+            np.array_equal(self.center, __value.center)
+
 
 class Octree():
     def __init__(self):
@@ -44,14 +60,26 @@ class Octree():
             node.children[direction].width = node.width / 2
             node.children[direction].height = node.height / 2
             node.children[direction].depth = node.depth / 2
+            node.children[direction].parent = node
         node.is_leaf = False
 
+    def exists(self, node, point):
+        if np.array_equal(node.point, point):
+            return True
+        if node.is_leaf:
+            return False
+        direction = self.get_direction(point, node.center)
+        return self.exists(node.children[direction], point)
+
     def insert(self, node, point):
+        if self.exists(node, point):
+            return
+
+        node.num_points += 1
+
         if node.is_leaf:
             if node.point is None:
                 node.point = point
-                return
-            elif np.array_equal(node.point, point):
                 return
             else:
                 self.subdivide(node)
@@ -105,3 +133,26 @@ class Octree():
             for child in node.children.values():
                 points.extend(self.get_points(child))
         return points
+
+    def _child_has_num_points(self, node, k):
+        return any([child.num_points >= k for child in node.children.values()])
+
+    def _child_with_num_points(self, node, k):
+        for child in node.children.values():
+            if child.num_points >= k:
+                return child
+        return None
+    
+    def knn_points(self, point, points, k):
+        indices = np.argsort(np.linalg.norm(point - points, axis=1))[:k]
+        return points[indices]
+
+    def get_k_nearest_neighbours(self, node, point, k):
+        direction = self.get_direction(point, node.center)
+        if node.num_points == k or\
+                direction not in node.children or\
+                (node.num_points > k and node.children[direction].num_points < k):
+             points = self.get_points(node)
+             return self.knn_points(point, np.array(points), k)
+        else:
+            return self.get_k_nearest_neighbours(node.children[direction], point, k)

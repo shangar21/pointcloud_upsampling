@@ -75,7 +75,9 @@ def subdivide_test():
         assert i.height == 0.25
         assert i.depth == 0.25
         assert (np.abs(i.center - oct.tree.center) - np.array([0.25, 0.25, 0.25])).sum() == 0
+        assert i.parent == oct.tree
     assert oct.tree.is_leaf == False
+    assert oct.tree.num_points == 0
 
     # subdivide a child node
     oct.subdivide(oct.tree.children[1])
@@ -94,12 +96,15 @@ def insert_test():
     oct.insert(oct.tree, points[0])
     oct.insert(oct.tree, points[1])
     assert oct.tree.is_leaf == False
+    assert oct.tree.num_points == 2
     assert oct.tree.children[0].is_leaf == True
     assert oct.tree.children[0].point is not None
     assert np.array_equal(oct.tree.children[0].point, points[0])
+    assert oct.tree.children[0].num_points == 1
     assert oct.tree.children[7].is_leaf == True
     assert oct.tree.children[7].point is not None
     assert np.array_equal(oct.tree.children[7].point, points[1])
+    assert oct.tree.children[7].num_points == 1
 
     assert oct.tree.children[1].point is None
     assert oct.tree.children[2].point is None
@@ -121,12 +126,15 @@ def insert_duplicate_test():
     oct.insert(oct.tree, points[1])
 
     assert oct.tree.is_leaf == False
+    assert oct.tree.num_points == 2
     assert oct.tree.children[0].is_leaf == True
     assert oct.tree.children[0].point is not None
     assert np.array_equal(oct.tree.children[0].point, points[0])
+    assert oct.tree.children[0].num_points == 1
     assert oct.tree.children[7].is_leaf == True
     assert oct.tree.children[7].point is not None
     assert np.array_equal(oct.tree.children[7].point, points[1])
+    assert oct.tree.children[7].num_points == 1
 
 
 def create_test():
@@ -148,7 +156,6 @@ def create_test():
     assert oct.tree.children[5].point is None
     assert oct.tree.children[6].point is None
 
-    
 
 if __name__ == "__main__":
     octreenode_create_test()
