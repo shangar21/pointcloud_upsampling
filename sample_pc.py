@@ -5,7 +5,7 @@ import octree
 import open3d as o3d
 import smoothing
 import time
-
+from kalman_filter import KalmanFilter
 def visualize_point_cloud(point_cloud):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -67,13 +67,32 @@ for i in range(N):
 #end = time.time()
 #print("MLS smoothing Time: ", end - start)
 #visualize_numpy_pointcloud_o3d(point_cloud_sample)
+A = np.array([[1, 0,0,1, 0,0],
+              [0, 1, 0, 0, 1, 0]
+              [0, 0, 1, 0, 0, 1],
+              [0, 0, 0, 1, 0, 0],
+              [0, 0, 0, 0, 1, 0],
+              [0, 0, 0, 0, 0, 1]])
+B = np.zeros(A.shape[1])
+H = np.diag([1, 1, 1, 0, 0, 0])
+R = np.diag([1, 1, 1, 0, 0, 0]) * 0.1 ** 2
+Q = np.eye(6) * 0.1**2
+G = np.block([np.zeros((3, 3,)), np.eye(3), np.zeros((3, 3,)), np.zeros((3, 3,))])
+KF = KalmanFilter(A, B, G, H, Q, R,)
 
 start = time.time()
 point_cloud_sample = smoothing.bilateral_smoothing(np.array(oct.get_points()), k=30, sigma_d=1, sigma_n=0.01)
+KF = KalmanFilter(A, B, G, H, Q, R, point_cloud_sample[0], np.eye(6) * 0.5**2)
+out = []
+for i in range(1, len(point_cloud_sample)):
+    KF.predict()
+    KF.update(point_cloud_sample[i])
+    out.append(KF.x)
+out = np.array(out)
 end = time.time()
 print("Bilateral smoothing Time: ", end - start)
-print("Bilateral smoothing shape: ", point_cloud_sample.shape)
-visualize_numpy_pointcloud_o3d(point_cloud_sample)
+print("Bilateral smoothing shape: ", out.shape)
+visualize_numpy_pointcloud_o3d(out)
 
 #point_cloud = np.array(oct.get_points())
 #point_cloud = o3d.geometry.PointCloud(o3d.utility.Vector3dVector(point_cloud))
