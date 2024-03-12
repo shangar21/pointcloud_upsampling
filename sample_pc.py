@@ -68,7 +68,7 @@ for i in range(N):
 #print("MLS smoothing Time: ", end - start)
 #visualize_numpy_pointcloud_o3d(point_cloud_sample)
 A = np.array([[1, 0,0,1, 0,0],
-              [0, 1, 0, 0, 1, 0]
+              [0, 1, 0, 0, 1, 0],
               [0, 0, 1, 0, 0, 1],
               [0, 0, 0, 1, 0, 0],
               [0, 0, 0, 0, 1, 0],
@@ -78,8 +78,6 @@ H = np.diag([1, 1, 1, 0, 0, 0])
 R = np.diag([1, 1, 1, 0, 0, 0]) * 0.1 ** 2
 Q = np.eye(6) * 0.1**2
 G = np.block([np.zeros((3, 3,)), np.eye(3), np.zeros((3, 3,)), np.zeros((3, 3,))])
-KF = KalmanFilter(A, B, G, H, Q, R,)
-
 start = time.time()
 point_cloud_sample = smoothing.bilateral_smoothing(np.array(oct.get_points()), k=30, sigma_d=1, sigma_n=0.01)
 KF = KalmanFilter(A, B, G, H, Q, R, point_cloud_sample[0], np.eye(6) * 0.5**2)
