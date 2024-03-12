@@ -5,7 +5,7 @@ then add a new point to an empty child of the parent in $\mathcal{T}$.
 One such iteration will double the number of points in the point cloud, then another will triple and so on. 
 This process gets repeated the number of times necessary to get the desired final number of points.
 Then we extract all points from $\mathcal{T}$ to get our new upsampled point cloud $\mathcal{P}'$.
-We then smooth $\mathcal{P}'$ with bilateral filtering.
+We then smooth $\mathcal{P}'$ with bilateral filtering. Bilateral filtering requires hyper parameters $\sigma_d, \sigma_n$ and $k$. $k$ indicates the number of neighbours used to find the normal of the regression plane, and $\sigma_d, \sigma_n$ are the standard deviations for the gaussians used in (\ref{eq:weight}).
 
 \begin{algorithm}[H]
 	\caption{Main upsampling algorithm}
@@ -23,6 +23,27 @@ We then smooth $\mathcal{P}'$ with bilateral filtering.
 		\EndFor
 		\State P \gets \Call{convertToPointCloud}{T}
 		\State \Call{bilateralSmooth}{P}
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]
+	\caption{Bilateral smoothing algorithm, borrowed heavily from \cite{3d_bilateral_filter_ipol}}
+	\begin{algorithmic}
+		\Require point cloud ${P}$ with $n$ points, $k$ neighbours, $\sigma_d$, $\sigma_n$
+		\Function{bilateralSmooth}{{P}}
+		\For{$p \in P$}
+			\State $\mathcal{N}_p$ \gets \Call{findNeighbours}{P, k}
+			\State $\textbf{n}_p$ \gets \Call{computeUnitNormalToPlane}{$\mathcal{N}$}
+			\State $s_w$ \gets 0
+			\State $\delta_p$ \gets 0
+			\For{$q \in \mathcal{N}_p$}
+			\State $w$ \gets $w_d(\norm{p - q}) \cdot w_n(\inner{\textbf{n}_p}{p - q})$ \Comment{From (\ref{eq:weight})} 
+				\State $s_w$ \gets $s_w + w$
+				\State $\delta_p$ \gets $\delta_p + w \cdot \inner{\textbf{n}_p}{p - q}$
+			\EndFor
+			\State $p'$ \gets $p + \frac{\delta_p}{s_w} \cdot \textbf{n}_p$
+		\EndFor
 		\EndFunction
 	\end{algorithmic}
 \end{algorithm}

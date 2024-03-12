@@ -37,13 +37,13 @@ point_cloud_path = sys.argv[1]
 point_cloud = np.load(point_cloud_path)
 
 # sample 1024 random points
-point_cloud_sample = point_cloud[np.random.choice(point_cloud.shape[0], 2048, replace=False), :]
+point_cloud_sample = point_cloud[np.random.choice(point_cloud.shape[0], 1024, replace=False), :]
 visualize_numpy_pointcloud_o3d(point_cloud_sample)
 #visualize_numpy_pointcloud_o3d(point_cloud_sample)
 
 oct = octree.Octree()
 oct.create(point_cloud_sample)
-N = 1
+N = 2
 for i in range(N):
     for point in point_cloud_sample:
         parent = oct.deepest_parent(point)
@@ -69,7 +69,7 @@ visualize_numpy_pointcloud_o3d(oct.get_points())
 #visualize_numpy_pointcloud_o3d(point_cloud_sample)
 
 start = time.time()
-point_cloud_sample = smoothing.bilateral_smoothing(np.array(oct.get_points()), k=30, sigma_d=1, sigma_n=0.01)
+point_cloud_sample = smoothing.bilateral_smoothing(np.array(oct.get_points()), k=30, sigma_d=0.1, sigma_n=0.1)
 end = time.time()
 print("Bilateral smoothing Time: ", end - start)
 print("Bilateral smoothing shape: ", point_cloud_sample.shape)

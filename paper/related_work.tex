@@ -9,5 +9,15 @@ LOP unlike MLS does not require fitting a local surface. Instead, it uses a proj
 
 Both MLS and LOP have demonstrated good results but a common problem with these methods is they don't perform well on sharp edges and corners, as the model often assumes a smooth surface.
 
+EAR was designed to work well on edges \cite{EdgeAwareResampling}. 
+It works by first computing the normals and relateive curvature of each point.
+Then if the curvature is above a certain threshold, the point is considered to be on an edge, and the point is projected onto the tangent plane of the edge.
+If a point is considered a surface is considered to be smooth, the point is projected onto the tangent plane of the surface.
 
+Graph total variation is a method that uses a graph to represent the point cloud. 
+They first construct a triangular mesh, then insert points at the centroids of the triangles. 
+Assuming the point cloud is piecewise smooth, they then minimize a weighted average of the $L1$ norms 
+of normals between points.
 
+Many deep learning based approaches also exist, such as PU-Net \cite{PU-Net}, PU-GAN \cite{PU-GAN} and PU-GCN \cite{PU-GCN}. Although these point cloud upsampling methods tackle a different problem, they were still used as a point of comparison.
+The reason these are solving different problems is because these are large networks trained on large datasets, and require a lot of computational power to train and run. The goal of this paper is to propose a fast and parameter free method for point cloud upsampling.

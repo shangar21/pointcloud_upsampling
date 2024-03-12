@@ -40,12 +40,12 @@ It is a generalization of the Gaussian filter, and it is used in various applica
 It is defined as follows:
 $$ B(I, x) = \sum\limits_{x_i \in \Omega} I(x_i) f_r(\norm{x_i - x})g_s(\norm{x_i - x})$$
 
-In our paper, we use the bilateral filter to smooth the point cloud. Similar to the image case, the bilateral filter smooths the point cloud while preserving the edges and the underlying structure of the point cloud.
+In our paper, we use the bilateral filter to smooth the point cloud. Similar to the image case, the bilateral filter smooths the point cloud while preserving the edges and the underlying structure of the point cloud. It works by shifting points along a normal vector, and the amount of shift is a weighted average distance to its neighbours.
 We follow Digne et al. \cite{3d_bilateral_filter_ipol} and use the following definition of the bilateral filter for point clouds:
 
 \begin{equation} p' = p + \delta_p \cdot n_p\end{equation} 
 
-Where $n_p$ is the normal to the regression plane of some $k$ nearest neighbours of $p$ (in our implementation computed with PCA) and $\delta_p$ is the displacement of the point $p$.
+Where $n_p$ is the normal to the regression plane of some $k$ nearest neighbours of $p$. Also following Dinge et al \cite{3d_bilateral_filter_ipol}, our implementation computes the normal with PCA. PCA will find the regression plane that fits the data best and the corresponding found eigenvectors will be orthogonal to said plane, and thus is simple to compute compared to an iterative least squares method. $\delta_p$ is the displacement of the point $p$.
 The displacement is computed as follows, let $\mathcal{N}_p$ be the set of $k$ nearest neighbours of $p$:
 
 \begin{equation}\label{eq:delta}  \delta_p = \dfrac{\sum\limits_{q \in \mathcal{N}_p} w_d(\norm{q - p})w_n(\inner{n_p}{q-p})\inner{n_p}{q-p}}{\sum\limits_{q \in \mathcal{N}_p}w_d(\norm{q - p})w_n(\inner{n_p}{q-p})}\end{equation} 
