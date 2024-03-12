@@ -1,0 +1,6 @@
+[submodule "PU-GCN"]
+	path = PU-GCN
+	url = git@github.com:guochengqian/PU-GCN.git
+[submodule "submodules/PU-GCN"]
+	path = submodules/PU-GCN
+	url = git@github.com:guochengqian/PU-GCN.git

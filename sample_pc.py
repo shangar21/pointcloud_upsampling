@@ -54,7 +54,7 @@ for i in range(N):
         oct.insert(oct.tree, point + np.multiply(magnitude, direction))
 
 
-#visualize_numpy_pointcloud_o3d(oct.get_points())
+visualize_numpy_pointcloud_o3d(oct.get_points())
 
 #start = time.time()
 #point_cloud_sample = smoothing.nearest_neighbours_smoothing(np.array(oct.get_points()), k=30)
