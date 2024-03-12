@@ -1,0 +1,13 @@
+Many non-deep learning based methods for point cloud upsampling have been proposed in the past such as moving least squares interpolation (MLS interpolation) in 2002 \cite{Alexa2003ComputingAR},
+Locally Optimal Projection (LOP) in 2007 \cite{LOP}, Edge Aware Resampling (EAR) in 2013 \cite{EdgeAwareResampling} and graph total variation in 2019 \cite{GraphTotalVariation}.
+
+
+MLS works by fitting a continuous surface to a set of local points using a weighted least squares fit of a polynomial surface to the points. 
+Points are added by computing the voronoi cells on the local surface and adding points to the vertices of the diagram.
+
+LOP unlike MLS does not require fitting a local surface. Instead, it uses a projection operator to project points onto a surface in a way that minimizes the sum of the weighted distances between the original and projected points. Improvements to LOP such as weighted LOP \cite{WLOP} were proposed that make LOP more robust to noise and outliers. 
+
+Both MLS and LOP have demonstrated good results but a common problem with these methods is they don't perform well on sharp edges and corners, as the model often assumes a smooth surface.
+
+
+

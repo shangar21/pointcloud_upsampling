@@ -1,0 +1,86 @@
+%! TeX program = lualatex
+\documentclass[fleqn, twocolumn]{article}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage{array, makecell}
+\usepackage[x11names, table]{xcolor}
+\usepackage{colortbl}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{tabto}
+\usepackage{verbatim}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{fancyvrb}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{calc}
+\usepackage{emoji}
+\usepackage[T1]{fontenc}
+%\usepackage{mathptmx}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{multicol}
+\usetikzlibrary{graphs,graphdrawing,arrows.meta}
+\usegdlibrary{trees}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\inner}[2]{\left\langle#1, #2\right\rangle}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\grad}[1]{\nabla #1}
+\newcommand{\hessian}[1]{\nabla^2 #1}
+\newcommand{\expectation}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\expectationwrt}[2][]{\mathbb{E}_{#2}\left[#1\right]}
+\newcommand{\bigO}[1]{\mathcal{O}\left(#1\right)}
+
+\author{Sharanshangar Muhunthan \\ \texttt{shangar.muhunthan@mail.utoronto.ca}}
+\newtheorem{definition}{Definition}
+\usepackage[margin=0.75in]{geometry}
+\title{BOLT \emoji{high-voltage}: Bilateral Filtering and Octree Lightweight Technique for Fast and Parameter Free Point Cloud Upscaling}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+	In this paper, we introduce BOLT (\underline{B}ilateral filtering and \underline{O}ctree \underline{L}ightweight \underline{T}echnique), a novel fast and parameter free method for upsampling point clouds.
+	We leverage the structural efficiency of the octree data structure and detail preserving properties of the bilateral filter to achieve a fast and parameter free upsampling method.
+	Unlike the current state-of-the-art methods, BOLT does not require any parameters, deep learning, fine tuning or any type of training making it a suitable candidate for real-time applications.
+	BOLT understands the underlying structure of the point cloud by dividing the point cloud into a hierarchical octree structure. 
+	Empty children are filled in the octree and outliers are smoothed using a bilateral filter.
+	We evaluate BOLT on various point clouds and compare it with the current state-of-the-art methods and show competitive results.
+\end{abstract}
+
+\section{Introduction}
+
+\input{introduction}
+
+\section{Related Work}
+
+\input{related_work}
+
+\section{Background}
+
+\input{background}
+
+\section{Methodology}
+
+\input{methodology}
+
+\section{Experiments}
+
+\input{experiments}
+
+\section{Conclusion}
+
+\input{conclusion}
+
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\end{document}

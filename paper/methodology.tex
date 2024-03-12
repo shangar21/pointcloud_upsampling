@@ -1,0 +1,29 @@
+Our goal is to upscale and then smooth a sparse point cloud using an octree with a large depth and bilateral filtering on a point cloud.
+We start with a sparse point cloud $\mathcal{P} = \{p_1, \dots, p_n\}$, and generate an octree $\mathcal{T}$ by iterating through and inserting one at a time.
+To generate the initial upsampling of the points, we find the parent of each for point $p_i$ in $\mathcal{T}$, 
+then add a new point to an empty child of the parent in $\mathcal{T}$. 
+One such iteration will double the number of points in the point cloud, then another will triple and so on. 
+This process gets repeated the number of times necessary to get the desired final number of points.
+Then we extract all points from $\mathcal{T}$ to get our new upsampled point cloud $\mathcal{P}'$.
+We then smooth $\mathcal{P}'$ with bilateral filtering.
+
+\begin{algorithm}[H]
+	\caption{Main upsampling algorithm}
+	\begin{algorithmic}
+		\Require sparse point cloud ${P}$ with $n$ points, $n_{\text{up}}$ desired final number of points
+		\Function{upsample}{{P}}
+		\State {T} \gets \Call{constructOctree}{{P}}
+		\For{$i \leq \frac{n_{\text{up}}}{n}$}
+			\For{$p \in P$}
+				\State parent \gets $p$.parent 
+				\State child \gets \Call{randomEmptyChild}{parent}
+				\State $p'$ \gets \Call{randomPointInside}{child.dimensions}
+				\State \Call{insert}{$p'$}
+			\EndFor
+		\EndFor
+		\State P \gets \Call{convertToPointCloud}{T}
+		\State \Call{bilateralSmooth}{P}
+		\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+

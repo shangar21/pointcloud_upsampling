@@ -1,0 +1,18 @@
+A pointcloud is an unordered 3D representation of a set of points in space.
+It is commonly used in computer graphics, computer vision, and robotics.
+Pointclouds are often generated using 3D scanners, LIDAR, or photogrammetry.
+
+In this work we wish to upsample a pointcloud. Given a set of point clouds, we wish to find a new set of points that are more dense but still represent the same underlying surface.
+The unstructured and unordered nature of point clouds makes this a challenging problem. Further, the new points while preserving the underlying structure should not introduce any new artifacts, and should be informative and not clustered around the original points.
+Further, existing methods for point cloud upsampling often are computationally expensive and require extensive training and parameter tuning. 
+
+To address the above challenges we present a data-structure-driven method for point cloud upsampling that is fast and parameter free. 
+Our method utilizes an octree data structure without a depth limit to understand the underlying structure and initially add points to the empty children of the octree.
+The lack of a depth limit allows tighter fitting bounding cubes around points and allows for a more accurate representation of the underlying structure.
+This representation is often noisy and coarse but captures the underlying structure of the point cloud. 
+To smooth the point cloud, we use a bilateral filter in a point cloud application \cite{3d_bilateral_filter_ipol} to smooth the point cloud.
+
+Point cloud upsampling can be used as a downstream task for various applications such as 3D reconstruction, 3D object recognition, and 3D rendering. 
+It can be used to improve the quality of surface reconstruction, enhance object detection, extract features more accurately, and more. 
+
+Our method, namely BOLT, learns the geometry and strucutre of the point cloud, upsamples and smooths it without any parameters, deep learning, or fine tuning.

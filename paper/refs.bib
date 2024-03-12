@@ -1,0 +1,104 @@
+@article{3d_bilateral_filter_ipol,
+    title   = {{The Bilateral Filter for Point Clouds}},
+    author  = {Digne, Julie and de Franchis, Carlo},
+    journal = {{Image Processing On Line}},
+    volume  = {7},
+    pages   = {278--287},
+    year    = {2017},
+    note    = {\url{https://doi.org/10.5201/ipol.2017.179}}
+}
+
+@article{open3d,
+    author    = {Qian-Yi Zhou and Jaesik Park and Vladlen Koltun},
+    title     = {{Open3D}: {A} Modern Library for {3D} Data Processing},
+    journal   = {arXiv:1801.09847},
+    year      = {2018},
+}
+
+@misc{octree_demo,
+	title = {Open3D OCtree 八叉树},
+	howpublished = {\url{https://blog.csdn.net/qq_41068877/article/details/124242265}}
+}
+
+@misc{octree_diagram,
+	title = {Octree},
+	howpublished = {\url{https://en.wikipedia.org/wiki/Octree}}
+}
+
+@article{Alexa2003ComputingAR,
+  title={Computing and Rendering Point Set Surfaces},
+  author={Marc Alexa and Johannes Behr and Daniel Cohen-Or and Shachar Fleishman and David Levin and Cl{\'a}udio T. Silva},
+  journal={IEEE Trans. Vis. Comput. Graph.},
+  year={2003},
+  volume={9},
+  pages={3-15},
+  url={https://api.semanticscholar.org/CorpusID:7929773}
+}
+
+@article{LOP,
+author = {Lipman, Yaron and Cohen-Or, Daniel and Levin, David and Tal-Ezer, Hillel},
+title = {Parameterization-free projection for geometry reconstruction},
+year = {2007},
+issue_date = {July 2007},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {26},
+number = {3},
+issn = {0730-0301},
+url = {https://doi.org/10.1145/1276377.1276405},
+doi = {10.1145/1276377.1276405},
+abstract = {We introduce a Locally Optimal Projection operator (LOP) for surface approximation from point-set data. The operator is parameterization free, in the sense that it does not rely on estimating a local normal, fitting a local plane, or using any other local parametric representation. Therefore, it can deal with noisy data which clutters the orientation of the points. The method performs well in cases of ambiguous orientation, e.g., if two folds of a surface lie near each other, and other cases of complex geometry in which methods based upon local plane fitting may fail. Although defined by a global minimization problem, the method is effectively local, and it provides a second order approximation to smooth surfaces. Hence allowing good surface approximation without using any explicit or implicit approximation space. Furthermore, we show that LOP is highly robust to noise and outliers and demonstrate its effectiveness by applying it to raw scanned data of complex shapes.},
+journal = {ACM Trans. Graph.},
+month = {jul},
+pages = {22–es},
+numpages = {6},
+keywords = {surface reconstruction, point-cloud, geometry projection operator}
+}
+
+@article{EdgeAwareResampling,
+author = {Huang, Hui and Wu, Shihao and Gong, Minglun and Cohen-Or, Daniel and Ascher, Uri and Zhang, Hao (Richard)},
+title = {Edge-aware point set resampling},
+year = {2013},
+issue_date = {January 2013},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {32},
+number = {1},
+issn = {0730-0301},
+url = {https://doi.org/10.1145/2421636.2421645},
+doi = {10.1145/2421636.2421645},
+abstract = {Points acquired by laser scanners are not intrinsically equipped with normals, which are essential to surface reconstruction and point set rendering using surfels. Normal estimation is notoriously sensitive to noise. Near sharp features, the computation of noise-free normals becomes even more challenging due to the inherent undersampling problem at edge singularities. As a result, common edge-aware consolidation techniques such as bilateral smoothing may still produce erroneous normals near the edges. We propose a resampling approach to process a noisy and possibly outlier-ridden point set in an edge-aware manner. Our key idea is to first resample away from the edges so that reliable normals can be computed at the samples, and then based on reliable data, we progressively resample the point set while approaching the edge singularities. We demonstrate that our Edge-Aware Resampling (EAR) algorithm is capable of producing consolidated point sets with noise-free normals and clean preservation of sharp features. We also show that EAR leads to improved performance of edge-aware reconstruction methods and point set rendering techniques.},
+journal = {ACM Trans. Graph.},
+month = {feb},
+articleno = {9},
+numpages = {12},
+keywords = {upsampling, surfel point set rendering, surface reconstruction, sampling, point set, normal estimation, edge aware, Point set resampling}
+}
+
+@misc{GraphTotalVariation,
+Author = {Chinthaka Dinesh and Gene Cheung and Ivan V. Bajic},
+Title = {3D Point Cloud Super-Resolution via Graph Total Variation on Surface Normals},
+Year = {2019},
+Eprint = {arXiv:1908.06261},
+}
+
+@article{WLOP,
+author = {Huang, Hui and Li, Dan and Zhang, Hao and Ascher, Uri and Cohen-Or, Daniel},
+title = {Consolidation of unorganized point clouds for surface reconstruction},
+year = {2009},
+issue_date = {December 2009},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {28},
+number = {5},
+issn = {0730-0301},
+url = {https://doi.org/10.1145/1618452.1618522},
+doi = {10.1145/1618452.1618522},
+abstract = {We consolidate an unorganized point cloud with noise, outliers, non-uniformities, and in particular interference between close-by surface sheets as a preprocess to surface generation, focusing on reliable normal estimation. Our algorithm includes two new developments. First, a weighted locally optimal projection operator produces a set of denoised, outlier-free and evenly distributed particles over the original dense point cloud, so as to improve the reliability of local PCA for initial estimate of normals. Next, an iterative framework for robust normal estimation is introduced, where a priority-driven normal propagation scheme based on a new priority measure and an orientation-aware PCA work complementarily and iteratively to consolidate particle normals. The priority setting is reinforced with front stopping at thin surface features and normal flipping to enable robust handling of the close-by surface sheet problem. We demonstrate how a point cloud that is well-consolidated by our method steers conventional surface generation schemes towards a proper interpretation of the input data.},
+journal = {ACM Trans. Graph.},
+month = {dec},
+pages = {1–7},
+numpages = {7}
+}
+
+
