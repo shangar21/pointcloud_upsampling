@@ -1,9 +1,11 @@
-Experiments were done mostly with the ShapeNet dataset \cite{shapenet}, which is a large dataset of 3D models. A random set of either 1024 or 2048 point clouds were sampled and then upscaled to double or quadruple the number of points. 
+Experiments were done mostly with the ShapeNet dataset \cite{shapenet}, which is a large dataset of 3D models. A random set of either 1024 or 2048 point clouds were sampled and then upscaled to double or quadruple the number of points.
+
+At this stage only qualitative results are shown, and quantitative results will be shown in the final paper. 
+Further, comparisons with other non-deep learning based methods, as well control studies comparing our method of placing with an octree and then smoothing to randomly placing points and then smoothing, will be done in the final paper.
 
 \subsection{Evaluation Metrics}
 
-We evaluate our model using the Chamfer distance, Hausdroff distance and point-to-surface distance.
-
+We will eventually evaluate our model using the Chamfer distance and Hausdroff distance as they are common metrics used in point cloud upsampling, and try to compare to other parameter free works as well as deep learning based methods.
 The Chamfer distance is a measure of how different 2 shapes are and is defined as the following:
 
 $$ C(P, Q) = \dfrac{1}{|P|} \sum\limits_{p \in P} \min_{q \in Q} \norm{p - q}^2 +  \dfrac{1}{|Q|} \sum\limits_{q \in Q} \min_{p \in P} \norm{p - q}^2 \label{eq:chamfer}$$
@@ -16,13 +18,11 @@ Where:
 
 $$h(A, B) = \max_{a \in A} \min_{b \in B} \norm{a - b}$$
 
-\subsection{Without Smoothing}
+\subsection{Preliminary Results}
 
-In this subsection we compare results with octree upsampling only, and no smoothing. 
-Qualitatively, the results are not as good as the results with smoothing, and do not fair well
-against other methods.
+In this subsection we qualitatively compare results with octree upsampling only, and no smoothing, as well as both octree sampling and bilateral smoothing.
 
-\begin{figure*}[h]
+\begin{figure*}[!ht]
 	\centering
 	\begin{subfigure}{0.3\textwidth}
 		\centering
@@ -43,11 +43,7 @@ against other methods.
 	\label{fig:no_smoothing}
 \end{figure*}
 
-\subsection{With Smoothing}
-
-In this subsection we compare results with octree upsampling and smoothing.
-
-\begin{figure*}[h]
+\begin{figure*}[!ht]
 	\centering
 	\begin{subfigure}{0.3\textwidth}
 		\centering
@@ -64,6 +60,8 @@ In this subsection we compare results with octree upsampling and smoothing.
 		\includegraphics[width=0.65\textwidth]{./4096_octree_bilateral.png}
 		\caption{Upsampled point cloud, with 4096 points using only octree and no smoothing}
 	\end{subfigure}	
-	\caption{A comparison of the original point cloud and the upsampled point cloud using only octree and no smoothing.}
+	\caption{A comparison of the original point cloud and the upsampled point cloud using only octree and bilateral smoothing.}
 	\label{fig:no_smoothing}
 \end{figure*}
+
+

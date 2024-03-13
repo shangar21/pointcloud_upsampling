@@ -5,6 +5,7 @@ import octree
 import open3d as o3d
 import smoothing
 import time
+import distances
 
 def visualize_point_cloud(point_cloud):
     fig = plt.figure()
@@ -53,20 +54,14 @@ for i in range(N):
         magnitude = np.array([np.random.uniform(low=0, high=i) for i in parent_dims])
         oct.insert(oct.tree, point + np.multiply(magnitude, direction))
 
-
+point_cloud_sample = oct.get_points()
 visualize_numpy_pointcloud_o3d(oct.get_points())
 
-#start = time.time()
-#point_cloud_sample = smoothing.nearest_neighbours_smoothing(np.array(oct.get_points()), k=30)
-#end = time.time()
-#print("KNN smoothing Time: ", end - start)
-#visualize_numpy_pointcloud_o3d(point_cloud_sample)
-#
-#start = time.time()
-#point_cloud_sample = smoothing.moving_least_squares_smoothing(np.array(oct.get_points()), k=30, degree=2)
-#end = time.time()
-#print("MLS smoothing Time: ", end - start)
-#visualize_numpy_pointcloud_o3d(point_cloud_sample)
+# Comute chamfer distance
+point_cloud_gt = point_cloud[np.random.choice(point_cloud.shape[0], 2048, replace=False), :]
+distance = distances.chamfer_distance(point_cloud_sample, point_cloud_gt)
+print(distance)
+
 
 start = time.time()
 point_cloud_sample = smoothing.bilateral_smoothing(np.array(oct.get_points()), k=30, sigma_d=0.1, sigma_n=0.1)
@@ -75,7 +70,4 @@ print("Bilateral smoothing Time: ", end - start)
 print("Bilateral smoothing shape: ", point_cloud_sample.shape)
 visualize_numpy_pointcloud_o3d(point_cloud_sample)
 
-#point_cloud = np.array(oct.get_points())
-#point_cloud = o3d.geometry.PointCloud(o3d.utility.Vector3dVector(point_cloud))
-#point_cloud = smoothing.edge_aware_resampling(point_cloud, 4096)
-#visualize_o3d_pointcloud_o3d(point_cloud)
+

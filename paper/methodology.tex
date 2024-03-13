@@ -2,7 +2,7 @@ Our goal is to upscale and then smooth a sparse point cloud using an octree with
 We start with a sparse point cloud $\mathcal{P} = \{p_1, \dots, p_n\}$, and generate an octree $\mathcal{T}$ by iterating through and inserting one at a time.
 To generate the initial upsampling of the points, we find the parent of each for point $p_i$ in $\mathcal{T}$, 
 then add a new point to an empty child of the parent in $\mathcal{T}$. 
-One such iteration will double the number of points in the point cloud, then another will triple and so on. 
+One such iteration will double the number of points in the point cloud, then another will quadruple and so on. 
 This process gets repeated the number of times necessary to get the desired final number of points.
 Then we extract all points from $\mathcal{T}$ to get our new upsampled point cloud $\mathcal{P}'$.
 We then smooth $\mathcal{P}'$ with bilateral filtering. Bilateral filtering requires hyper parameters $\sigma_d, \sigma_n$ and $k$. $k$ indicates the number of neighbours used to find the normal of the regression plane, and $\sigma_d, \sigma_n$ are the standard deviations for the gaussians used in (\ref{eq:weight}).
@@ -10,10 +10,10 @@ We then smooth $\mathcal{P}'$ with bilateral filtering. Bilateral filtering requ
 \begin{algorithm}[H]
 	\caption{Main upsampling algorithm}
 	\begin{algorithmic}
-		\Require sparse point cloud ${P}$ with $n$ points, $n_{\text{up}}$ desired final number of points
+		\Require sparse point cloud ${P}$ with $n$ points, $n_{\text{up}}$ number of iterations required to get the desired number of points 
 		\Function{upsample}{{P}}
 		\State {T} \gets \Call{constructOctree}{{P}}
-		\For{$i \leq \frac{n_{\text{up}}}{n}$}
+		\For{$i \leq n_{\text{up}}$}
 			\For{$p \in P$}
 				\State parent \gets $p$.parent 
 				\State child \gets \Call{randomEmptyChild}{parent}
