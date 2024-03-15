@@ -1,9 +1,10 @@
 A pointcloud is an unordered 3D representation of a set of points in space.
 It is commonly used in computer graphics, computer vision, and robotics.
-Pointclouds are often generated using 3D scanners, LIDAR, or photogrammetry.
+Pointclouds are often generated using 3D scanners, LIDAR, and many more 3D applications.
 
 In this work we wish to upsample a pointcloud. Given a set of point clouds, we wish to find a new set of points that are more dense but still represent the same underlying surface.
-The unstructured and unordered nature of point clouds makes this a challenging problem. Further, the new points while preserving the underlying structure should not introduce any new artifacts, and should be informative and not clustered around the original points.
+Further, the new points while preserving the underlying structure should not introduce any new artifacts, and should be informative and not clustered around the original points.
+The unstructured and unordered nature of point clouds makes this a challenging problem. 
 Further, existing methods for point cloud upsampling often are computationally expensive and require extensive training and parameter tuning. 
 
 To address the above challenges we present a data-structure-driven method for point cloud upsampling that is fast and parameter free. 

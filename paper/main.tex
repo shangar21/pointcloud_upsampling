@@ -42,7 +42,11 @@
 \newcommand{\expectationwrt}[2][]{\mathbb{E}_{#2}\left[#1\right]}
 \newcommand{\bigO}[1]{\mathcal{O}\left(#1\right)}
 
-\author{Sharanshangar Muhunthan \\ \texttt{shangar.muhunthan@mail.utoronto.ca}}
+\author{
+	Sharanshangar Muhunthan \\ \texttt{shangar.muhunthan@mail.utoronto.ca}
+	\and
+	Fei Yu Guan \\ \texttt{vi.guan@mail.utoronto.ca}
+}
 \newtheorem{definition}{Definition}
 \usepackage[margin=0.75in]{geometry}
 \title{BOLT \emoji{high-voltage}: Bilateral Filtering and Octree Lightweight Technique for Fast and Parameter Free Point Cloud Upscaling}
@@ -55,7 +59,7 @@
 	Unlike the current state-of-the-art methods, BOLT does not require any parameters, deep learning, fine tuning or any type of training making it a suitable candidate for real-time applications.
 	BOLT understands the underlying structure of the point cloud by dividing the point cloud into a hierarchical octree structure. 
 	Empty children are filled in the octree and outliers are smoothed using a bilateral filter.
-	We evaluate BOLT on various point clouds and compare it with the current state-of-the-art methods and show competitive results.
+	%We evaluate BOLT on various point clouds and compare it with the current state-of-the-art methods and show competitive results.
 \end{abstract}
 
 \section{Introduction}
