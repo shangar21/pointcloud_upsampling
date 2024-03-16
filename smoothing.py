@@ -64,25 +64,24 @@ def regression_plane(neighbours):
     normal = evec[:, np.argmin(ev)]
     return mean, normal
 
-def bilateral_smoothing(point_cloud, k=5, sigma_d=0.1, sigma_n=0.1):
+def bilateral_smoothing(point_cloud, new_points, k=5, sigma_d=0.1, sigma_n=0.1):
     # create KDTree from the point cloud
     tree = KDTree(point_cloud)
     # Iterate over each point in the point cloud
-    for i in tqdm(range(point_cloud.shape[0])):
+    for i in tqdm(range(new_points.shape[0])):
         # get the k nearest neighbours
-        indices = tree.query(point_cloud[i].reshape(1, -1), k=k+1)[1][0]
-        indices = indices[1:]
+        indices = tree.query(new_points[i].reshape(1, -1), k=k+1)[1][0]
         neighbours = point_cloud[indices]
         mean, normal = regression_plane(neighbours)
         sum_of_weights = 0
         delta_p = 0
         for q in neighbours:
-            d_d = np.linalg.norm(q - point_cloud[i])
-            d_n = np.dot(normal, q - point_cloud[i])
+            d_d = np.linalg.norm(q - new_points[i])
+            d_n = np.dot(normal, q - new_points[i])
             w = np.exp(-d_d**2/(2*sigma_d**2) - d_n**2/(2*sigma_n**2))
             delta_p = delta_p + (w * d_n)
             sum_of_weights = sum_of_weights + w
-        point_cloud[i] = point_cloud[i] + ((delta_p / sum_of_weights ) * normal)
-    return point_cloud
+        new_points[i] = new_points[i] + ((delta_p / sum_of_weights ) * normal)
+    return np.vstack((point_cloud, new_points))
 
   

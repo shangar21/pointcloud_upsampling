@@ -7,6 +7,14 @@ import smoothing
 import time
 import distances
 
+'''
+todo:
+- add chamfer distance
+- add hausdorff distances
+- CHANGE BILATERAL FILTERING TO ONLY SMOOTH THE POINTS THAT ARE NOT IN THE ORIGINAL POINT CLOUD!!!
+
+'''
+
 def visualize_point_cloud(point_cloud):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -20,12 +28,6 @@ def visualize_numpy_pointcloud_o3d(point_cloud):
 
 def visualize_o3d_pointcloud_o3d(point_cloud):
     o3d.visualization.draw_geometries([point_cloud])
-
-def estimate_normals(point_cloud):
-    pcd = o3d.geometry.PointCloud()
-    pcd.points = o3d.utility.Vector3dVector(point_cloud)
-    normals = np.asarray(pcd.estimate_normals())
-    return normals 
 
 def estimate_normals(point_cloud):
     pcd = o3d.geometry.PointCloud()
@@ -45,6 +47,7 @@ visualize_numpy_pointcloud_o3d(point_cloud_sample)
 oct = octree.Octree()
 oct.create(point_cloud_sample)
 N = 2
+new_pts = []
 for i in range(N):
     for point in point_cloud_sample:
         parent = oct.deepest_parent(point)
@@ -52,19 +55,21 @@ for i in range(N):
         direction = np.random.randint(0, 8)
         direction = octree.DIRECTION_TO_COORDINATES[direction]
         magnitude = np.array([np.random.uniform(low=0, high=i) for i in parent_dims])
+        new_pts.append(point + np.multiply(magnitude, direction))
         oct.insert(oct.tree, point + np.multiply(magnitude, direction))
 
-point_cloud_sample = oct.get_points()
-visualize_numpy_pointcloud_o3d(oct.get_points())
+new_pts = np.array(new_pts)
 
 # Comute chamfer distance
 point_cloud_gt = point_cloud[np.random.choice(point_cloud.shape[0], 2048, replace=False), :]
 distance = distances.chamfer_distance(point_cloud_sample, point_cloud_gt)
 print(distance)
 
+# to do:
+# modify the bilateral smoothing to only smooth the points that are not in the original point cloud !!!!!!
 
 start = time.time()
-point_cloud_sample = smoothing.bilateral_smoothing(np.array(oct.get_points()), k=30, sigma_d=0.1, sigma_n=0.1)
+point_cloud_sample = smoothing.bilateral_smoothing(point_cloud_sample, new_pts, k=30, sigma_d=0.1, sigma_n=0.1)
 end = time.time()
 print("Bilateral smoothing Time: ", end - start)
 print("Bilateral smoothing shape: ", point_cloud_sample.shape)

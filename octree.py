@@ -132,6 +132,7 @@ class Octree():
         else:
             for child in node.children.values():
                 points.extend(self.get_points(child))
+        points = np.array(points)
         return points
 
     def _child_has_num_points(self, node, k):
