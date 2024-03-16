@@ -1,6 +1,0 @@
-Idea:
-Given a sparse point cloud, we want to output a dense point cloud that is consistent with the input. 
-We also want this to be done fast.
-
-Implementation:
-test hypothesis: Adding points to child of deep octree will upscale point cloud well, or atleast close enough for a parameter free / deterministic method to finish.
