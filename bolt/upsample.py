@@ -51,7 +51,7 @@ def bolt(point_cloud_source, **kwargs):
     sigma_d = kwargs.get("sigma_d", 0.1)
     sigma_n = kwargs.get("sigma_n", 0.1)
     n_iter = kwargs.get("n_iter", 1)
-    n_final_sample = kwargs.get("n_final_sample", 1)
+    n_final_sample = kwargs.get("n_final_sample", 2048)
     visualize = kwargs.get("visualize", False)
     smoothing_type = kwargs.get("smoothing_type", "bilateral")
     random_sample = kwargs.get("random_sample", False)

@@ -1,5 +1,7 @@
 import bolt
 import argparse
+import numpy as np
+import open3d as o3d
 
 '''
 todo:
@@ -30,10 +32,18 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--smoothing_type", type=str, help="Type of smoothing", default="bilateral")
     parser.add_argument("-m", "--metric", type=str, help="Type of metric", default="chamfer")
     parser.add_argument("--random_sampling", help="Random sampling", action="store_true")
+    parser.add_argument("--mls", help="Use mls sampling", action="store_true")
+    parser.add_argument("-o", "--output_path", type=str, help="Output path", default="./bolt_upsampled.npy")
     args = parser.parse_args()
     
     kwargs = vars(args)
-    point_cloud_sample = bolt.upsample.bolt(kwargs.pop('point_cloud_source'), **kwargs) 
+    source_path = kwargs.pop('point_cloud_source')
+    point_cloud_sample = bolt.upsample.bolt(source_path, **kwargs) 
+    np.save(args.output_path, point_cloud_sample)
    
-  #  mls_sampling("tmp/pointcloud.pcd", 20, 2, "tmp/mls.pcd", visualize=args.visualize)
+    if args.mls:
+        point_cloud = np.load(source_path)
+        o3d.io.write_point_cloud("tmp/pointcloud.pcd", o3d.geometry.PointCloud(o3d.utility.Vector3dVector(point_cloud)))
+        point_cloud = mls_sampling("tmp/pointcloud.pcd", 20, 2, "tmp/mls.pcd", visualize=args.visualize)
+        np.save(args.output_path, point_cloud)
 
