@@ -1,8 +1,8 @@
 import numpy as np
 import open3d as o3d
 from tqdm import tqdm
-import smoothing
-from visualize import visualize_numpy_pointcloud_o3d
+import bolt.smoothing as smoothing
+from .visualize import visualize_numpy_pointcloud_o3d
 import time
 
 def estimate_normals(point_cloud):
