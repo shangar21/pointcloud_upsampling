@@ -2,6 +2,8 @@ import bolt
 import argparse
 import numpy as np
 import open3d as o3d
+import subprocess
+from bolt.visualize import visualize_o3d_pointcloud_o3d
 
 '''
 todo:

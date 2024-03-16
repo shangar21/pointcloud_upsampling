@@ -44,7 +44,6 @@ int main(int argc, char** argv){
 
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::PointCloud<pcl::PointXYZ>::Ptr outputCloud (new pcl::PointCloud<pcl::PointXYZ>);
-	pcl::PointCloud<pcl::PointXYZ>::Ptr denseCloud (new pcl::PointCloud<pcl::PointXYZ>);
 
 	if(pcl::io::loadPCDFile<pcl::PointXYZ>(input_file, *cloud) == -1){
 		PCL_ERROR("Couldn't read file %s\n", input_file.c_str());
@@ -66,10 +65,7 @@ int main(int argc, char** argv){
 	mls.setUpsamplingStepSize(0.01);
 	mls.setPolynomialOrder(polynomial_order);
 	mls.setSqrGaussParam(radius*radius);
-	mls.process(*denseCloud);
-
-	*outputCloud = *cloud;
-	*outputCloud += *denseCloud;
+	mls.process(*outputCloud);
 
 	if (outputCloud -> points.size() == 0){
 		PCL_ERROR("No points in output cloud\n");
