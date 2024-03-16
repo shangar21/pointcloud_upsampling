@@ -34,8 +34,8 @@ float estimateSearchRadius(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, int k)
 	return radius/cloud->points.size();
 }
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv){
+
 	std::string input_file = std::string(argv[1]);
 	int k = std::stoi(argv[2]);
 	int polynomial_order = std::stoi(argv[3]);
@@ -46,8 +46,7 @@ int main(int argc, char** argv)
 	pcl::PointCloud<pcl::PointXYZ>::Ptr outputCloud (new pcl::PointCloud<pcl::PointXYZ>);
 	pcl::PointCloud<pcl::PointXYZ>::Ptr denseCloud (new pcl::PointCloud<pcl::PointXYZ>);
 
-	if(pcl::io::loadPCDFile<pcl::PointXYZ>(input_file, *cloud) == -1)
-	{
+	if(pcl::io::loadPCDFile<pcl::PointXYZ>(input_file, *cloud) == -1){
 		PCL_ERROR("Couldn't read file %s\n", input_file.c_str());
 		return -1;
 	}
@@ -72,14 +71,12 @@ int main(int argc, char** argv)
 	*outputCloud = *cloud;
 	*outputCloud += *denseCloud;
 
-	if (outputCloud -> points.size() == 0)
-	{
+	if (outputCloud -> points.size() == 0){
 		PCL_ERROR("No points in output cloud\n");
 		return -1;
 	}
 
-	if (outputCloud -> points.size() == cloud -> points.size())
-	{
+	if (outputCloud -> points.size() == cloud -> points.size()){
 		std::cout << "No points were added to the original cloud\n";
 	}
 

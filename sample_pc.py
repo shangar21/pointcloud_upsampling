@@ -10,6 +10,7 @@ from visualize import visualize_numpy_pointcloud_o3d, visualize_point_cloud, vis
 import argparse
 from tqdm import tqdm
 from utils import knn_smoothing, bilateral_smoothing
+import subprocess
 
 '''
 todo:
@@ -53,6 +54,14 @@ def random_sampling(point_cloud, n, visualize=False):
         visualize_numpy_pointcloud_o3d(np.vstack((new_points, point_cloud)))
     return new_points
 
+def mls_sampling(point_cloud_sample_path, k, polynomial_order, output_path, visualize=False):
+    subprocess.run(["pcl_src/build/mls", point_cloud_sample_path, str(k), str(polynomial_order), output_path])
+    point_cloud_sample = o3d.io.read_point_cloud(output_path)
+    if visualize:
+        visualize_o3d_pointcloud_o3d(point_cloud_sample)
+    point_cloud_sample = np.asarray(point_cloud_sample.points)
+    print("MLS shape: ", point_cloud_sample.shape)
+    return point_cloud_sample 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -86,4 +95,6 @@ if __name__ == "__main__":
     else:
         print("Invalid smoothing type, please choose either 'knn' or 'bilateral'")
         sys.exit(1)
+    
+    mls_sampling("tmp/pointcloud.pcd", 20, 2, "tmp/mls.pcd", visualize=args.visualize)
 
