@@ -64,7 +64,7 @@ class Octree():
         node.is_leaf = False
 
     def exists(self, node, point):
-        if np.array_equal(node.point, point):
+        if np.array_equal(node.point, point) or np.linalg.norm(node.center - point) < 1e-6:
             return True
         if node.is_leaf:
             return False
