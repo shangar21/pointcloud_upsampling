@@ -1,5 +1,10 @@
+ghapi
 matplotlib
+nox
 numpy
 open3d
+pytest
+rich
 scipy
+setuptools
 tqdm
