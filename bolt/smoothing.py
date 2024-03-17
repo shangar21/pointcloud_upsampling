@@ -2,6 +2,7 @@ import numpy as np
 from tqdm import tqdm
 from scipy.spatial import KDTree 
 import open3d as o3d
+import bolt.bilateral_smooth_src as bss
 
 def nearest_neighbours_smoothing(point_cloud, new_points, k=5):
     """
@@ -48,4 +49,8 @@ def bilateral_smoothing(point_cloud, new_points, k=5, sigma_d=0.1, sigma_n=0.1, 
             new_points[i] = new_points[i] + ((delta_p / sum_of_weights ) * normal)
     return np.vstack((point_cloud, new_points))
 
-  
+
+def bilateral_smooth_cpp(point_cloud, new_points, k=5, sigma_d=0.1, sigma_n=0.1, n_iter=1):
+    print(point_cloud)
+    result = bss.bilateral_smooth(point_cloud, new_points, k, sigma_d, sigma_n, n_iter)
+    return np.vstack((point_cloud, result))

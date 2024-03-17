@@ -24,7 +24,7 @@ def knn_smoothing(point_cloud_sample, new_pts, k=5, visualize=False):
 
 def bilateral_smoothing(point_cloud_sample, new_pts, k=30, sigma_d=0.1, sigma_n=0.1, n_iter=1, visualize=False):
     start = time.time()
-    point_cloud_sample = smoothing.bilateral_smoothing(point_cloud_sample, new_pts, k=k, sigma_d=sigma_d, sigma_n=sigma_n, n_iter=n_iter)
+    point_cloud_sample = smoothing.bilateral_smooth_cpp(point_cloud_sample, new_pts, k=k, sigma_d=sigma_d, sigma_n=sigma_n, n_iter=n_iter)
     end = time.time()
     print("Bilateral smoothing Time: ", end - start)
     print("Bilateral smoothing shape: ", point_cloud_sample.shape)

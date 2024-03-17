@@ -10,4 +10,3 @@ add_definitions(${PCL_DEFINITIONS})
 
 add_executable (mls mls.cpp)
 target_link_libraries (mls ${PCL_LIBRARIES})
-
