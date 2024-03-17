@@ -1,6 +1,8 @@
 from setuptools import setup, find_packages
 from pybind11.setup_helpers import Pybind11Extension, build_ext
 
+install_requires = open('requirements.txt').read().strip().split('\n')
+
 ext_modules = [
     Pybind11Extension(
         "bolt.bilateral_smooth_src", 
@@ -14,10 +16,5 @@ setup(
         packages=find_packages(include=['bolt', 'bolt.*']),
         ext_modules=ext_modules,
         cmdclass={"build_ext": build_ext},
-        install_requires=[
-            'open3d',
-            'numpy',
-            'tqdm',
-            'matplotlib'
-        ]
+        install_requires=install_requires
 )
