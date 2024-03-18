@@ -3,7 +3,10 @@
 	url = git@github.com:guochengqian/PU-GCN.git
 [submodule "submodules/PU-GCN"]
 	path = submodules/PU-GCN
-	url = git@github.com:guochengqian/PU-GCN.git
+	url = git@github.com:zademn/PU-GCN-pytorch.git
 [submodule "submodules/pybind11"]
 	path = submodules/pybind11
 	url = git@github.com:pybind/pybind11.git
+[submodule "submodules/submodules/PU-GCN"]
+	path = submodules/submodules/PU-GCN
+	url = git@github.com:zademn/PU-GCN-pytorch.git
