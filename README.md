@@ -15,11 +15,7 @@ sudo apt install python3-dev
 
 ### BOLT ⚡
 
-Make sure environment is up to date with requirements.txt
-
-```bash
-pip install -r requirements.txt
-```
+Can install/build everything, including the MLS interpolation for comparison with the commands below.
 
 If cloned, can also install and set-up with:
 
