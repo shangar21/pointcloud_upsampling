@@ -1,5 +1,14 @@
 from setuptools import setup, find_packages
 from pybind11.setup_helpers import Pybind11Extension, build_ext
+import subprocess
+import os
+
+def build_mls():
+    os.chdir('pcl_src')
+    os.makedirs('build', exist_ok=True)
+    os.chdir('build')
+    subprocess.run(['cmake', '..'])
+    subprocess.run(['cmake', '--build', '.'])
 
 install_requires = open('requirements.txt').read().strip().split('\n')
 
@@ -18,3 +27,5 @@ setup(
         cmdclass={"build_ext": build_ext},
         install_requires=install_requires
 )
+
+build_mls()

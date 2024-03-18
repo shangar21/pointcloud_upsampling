@@ -5,6 +5,7 @@
 #include<pcl/search/kdtree.h>
 #include<string>
 #include<fstream>
+#include<chrono>
 
 void handleOutputFile(std::string output_file)
 {
@@ -52,10 +53,10 @@ int main(int argc, char** argv){
 
 	pcl::search::KdTree<pcl::PointXYZ>::Ptr kdTree(new pcl::search::KdTree<pcl::PointXYZ>);
 	pcl::MovingLeastSquares<pcl::PointXYZ, pcl::PointXYZ> mls;
+
+	auto start = std::chrono::high_resolution_clock::now();
+	
 	float radius = estimateSearchRadius(cloud, k);
-
-	std::cout << "Estimated search radius: " << radius << std::endl;
-
 	mls.setComputeNormals(true);
 	mls.setInputCloud(cloud);
 	mls.setSearchMethod(kdTree);
@@ -66,6 +67,12 @@ int main(int argc, char** argv){
 	mls.setPolynomialOrder(polynomial_order);
 	mls.setSqrGaussParam(radius*radius);
 	mls.process(*outputCloud);
+
+	auto end = std::chrono::high_resolution_clock::now();
+
+	std::chrono::duration<double> elapsed = end - start;
+
+	std::cout << "Time taken: " << elapsed.count() << "s\n";
 
 	if (outputCloud -> points.size() == 0){
 		PCL_ERROR("No points in output cloud\n");
