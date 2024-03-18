@@ -2,6 +2,15 @@
 
 ## Setup
 
+Before starting install, need some dependencies:
+
+```
+pip install "pybind[global]"
+sudo apt install libpcl-dev
+sudo apt install libeigen3-dev
+sudo apt install libnanoflann-dev
+```
+
 ### BOLT ⚡
 
 Make sure environment is up to date with requirements.txt
