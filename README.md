@@ -10,6 +10,7 @@ sudo apt install libpcl-dev
 sudo apt install libeigen3-dev
 sudo apt install libnanoflann-dev
 sudo apt install pybind11-dev
+sudo apt install python3-dev
 ```
 
 ### BOLT ⚡
