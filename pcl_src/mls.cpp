@@ -74,15 +74,6 @@ int main(int argc, char** argv){
 
 	std::cout << "Time taken: " << elapsed.count() << "s\n";
 
-	if (outputCloud -> points.size() == 0){
-		PCL_ERROR("No points in output cloud\n");
-		return -1;
-	}
-
-	if (outputCloud -> points.size() == cloud -> points.size()){
-		std::cout << "No points were added to the original cloud\n";
-	}
-
 	handleOutputFile(output_file);
 	pcl::io::savePCDFile(output_file, *outputCloud);
 
