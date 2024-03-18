@@ -9,6 +9,7 @@ pip install "pybind11[global]"
 sudo apt install libpcl-dev
 sudo apt install libeigen3-dev
 sudo apt install libnanoflann-dev
+sudo apt install pybind11-dev
 ```
 
 ### BOLT ⚡
