@@ -5,7 +5,7 @@
 Before starting install, need some dependencies:
 
 ```
-pip install "pybind[global]"
+pip install "pybind11[global]"
 sudo apt install libpcl-dev
 sudo apt install libeigen3-dev
 sudo apt install libnanoflann-dev
