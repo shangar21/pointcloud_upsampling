@@ -7,6 +7,7 @@ import argparse
 import numpy as np
 from model import BoltNet
 import open3d as o3d
+import utils
 
 def initial_sample(point_cloud_path, n, visualize=False):
     point_cloud = np.load(point_cloud_path)
@@ -20,18 +21,6 @@ def estimate_normals(point_cloud, k=30):
     pcd.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamKNN(knn=k))
     normals = np.asarray(pcd.normals)
     return normals
-
-def voxelize(point_cloud, voxel_size=0.01):
-    pcd = o3d.geometry.PointCloud()
-    pcd.points = o3d.utility.Vector3dVector(point_cloud)
-    voxel_grid = o3d.geometry.VoxelGrid.create_from_point_cloud(pcd, voxel_size=voxel_size)
-    voxels = voxel_grid.get_voxels()
-    indices = np.stack(list(vx.grid_index for vx in voxels))
-    x, y, z = indices[:, 0], indices[:, 1], indices[:, 2]
-    voxel_tensor = torch.zeros((np.max(x) + 1, np.max(y) + 1, np.max(z) + 1), dtype=torch.float32)
-    for i in range(indices.shape[0]):
-        voxel_tensor[x[i], y[i], z[i]] = 1
-    return voxel_tensor
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -50,10 +39,19 @@ if __name__ == '__main__':
     parser.add_argument("-o", "--output_path", type=str, help="Output path", default="./bolt_upsampled.npy")
     parser.add_argument("-p", "--model_path", type=str, help="Path to the model", default="./model.pth")
     args = parser.parse_args()
+
+    data_loader = utils.PointCloudDataLoader(args.point_cloud_source)
+
     
-    kwargs = vars(args)
-    source_path = kwargs.pop('point_cloud_source')
-    pc_sample, normals = initial_sample(source_path, kwargs.pop('n_initial_sample'), kwargs.pop('visualize'))
-    voxel_grid = voxelize(pc_sample)
+    #kwargs = vars(args)
+    #source_path = kwargs.pop('point_cloud_source')
+    #pc_sample, normals = initial_sample(source_path, kwargs.pop('n_initial_sample'), kwargs.pop('visualize'))
+    #data_loader = utils.PointCloudDataLoader(source_path)
+    #model = BoltNet(1, 1)
+    #model.to('cuda')
+    #pc_sample = torch.from_numpy(pc_sample).float()
+    #normals = torch.from_numpy(normals).float()
+    #out = model(torch.unsqueeze(pc_sample, 0).to("cuda"))
+    #print(out.shape)
     
    

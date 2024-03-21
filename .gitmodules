@@ -15,7 +15,7 @@
 	url = git@github.com:shangar21/PyTorchEMD.git
 [submodule "bolt/deep_bolt/pvcnn"]
 	path = bolt/deep_bolt/pvcnn
-	url = git@github.com:shangar21/pvcnn.git
+	url = git@github.com:mit-han-lab/pvcnn.git
 [submodule "submodules/ocnn-pytorch"]
 	path = submodules/ocnn-pytorch
 	url = git@github.com:octree-nn/ocnn-pytorch.git
