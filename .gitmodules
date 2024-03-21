@@ -1,12 +1,21 @@
-[submodule "PU-GCN"]
-	path = PU-GCN
-	url = git@github.com:guochengqian/PU-GCN.git
 [submodule "submodules/PU-GCN"]
 	path = submodules/PU-GCN
 	url = git@github.com:zademn/PU-GCN-pytorch.git
 [submodule "submodules/pybind11"]
 	path = submodules/pybind11
 	url = git@github.com:pybind/pybind11.git
-[submodule "submodules/submodules/PU-GCN"]
-	path = submodules/submodules/PU-GCN
-	url = git@github.com:zademn/PU-GCN-pytorch.git
+[submodule "submodules/pvcnn"]
+	path = submodules/pvcnn
+	url = git@github.com:mit-han-lab/pvcnn.git
+[submodule "submodules/tinycudann"]
+	path = submodules/tinycudann
+	url = git@github.com:shangar21/tiny-cuda-nn.git
+[submodule "submodules/PyTorchEMD"]
+	path = submodules/PyTorchEMD
+	url = git@github.com:shangar21/PyTorchEMD.git
+[submodule "bolt/deep_bolt/pvcnn"]
+	path = bolt/deep_bolt/pvcnn
+	url = git@github.com:shangar21/pvcnn.git
+[submodule "submodules/ocnn-pytorch"]
+	path = submodules/ocnn-pytorch
+	url = git@github.com:octree-nn/ocnn-pytorch.git
