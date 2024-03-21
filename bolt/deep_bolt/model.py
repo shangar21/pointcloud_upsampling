@@ -44,19 +44,17 @@ class PVCNN(nn.Module):
 class BoltNet(nn.Module):
     def __init__(self, num_classes, num_shapes, out_points=2048):
         super(BoltNet, self).__init__()
-        self.encoder = PVCNN(1, 1)
+        self.encoder = PVCNN(num_classes, num_shapes)
         num_shapes = self.encoder.num_shapes
         channels_point = self.encoder.channels_point
         concat_channels_point = self.encoder.concat_channels_point
-        self.decoder = nn.Sequential(
-                nn.Linear(3 * (num_shapes + channels_point + concat_channels_point), 2048),
-                nn.ReLU(),
-                nn.Linear(2048, 2048),
-                nn.ReLU()
-            )
+        self.decoder, _ = create_mlp_components(in_channels=(num_shapes + channels_point + concat_channels_point),
+                                          out_channels=[out_points, 0.2, out_points, 0.2, out_points],
+                                          classifier=True, dim=2, width_multiplier=1)
+        self.decoder = nn.Sequential(*self.decoder)
+
 
     def forward(self, x):
         x = self.encoder(x) 
-        x = nn.Flatten()(x)
         x = self.decoder(x)
         return x

@@ -40,11 +40,20 @@ if __name__ == '__main__':
     parser.add_argument("-p", "--model_path", type=str, help="Path to the model", default="./model.pth")
     args = parser.parse_args()
 
-    data_loader = utils.PointCloudDataLoader(args.point_cloud_source)
+    dataset = utils.PointCloudData(args.point_cloud_source, pc_class='02691156')
+    data_loader = torch.utils.data.DataLoader(dataset, batch_size=32, shuffle=True)
+    num_classes = dataset.num_classes() 
+    num_shapes = dataset.num_classes()
+
+    model = BoltNet(num_classes, num_shapes, out_points=4096)
+    model.to('cuda')
+
+    x = next(iter(data_loader))
+    print(x.shape)
+    out = model(x)
+    print(out.shape)
 
     
-    #kwargs = vars(args)
-    #source_path = kwargs.pop('point_cloud_source')
     #pc_sample, normals = initial_sample(source_path, kwargs.pop('n_initial_sample'), kwargs.pop('visualize'))
     #data_loader = utils.PointCloudDataLoader(source_path)
     #model = BoltNet(1, 1)
