@@ -1,7 +1,6 @@
 import torch
 from model import BoltNet 
 import torch.optim as optim
-from loss import BoltLoss
 import sys
 import argparse
 import numpy as np
@@ -42,10 +41,7 @@ if __name__ == '__main__':
             optimizer.zero_grad()
             inputs, true_pc = data
             outputs = model(inputs)
-            outputs.transpose_(1, 2)
-            true_pc.transpose_(1, 2)
             loss, _ = chamfer_distance(outputs, true_pc)
-            #loss = loss.mean()
             loss.backward()
             optimizer.step()
             losses.append(loss.item())
