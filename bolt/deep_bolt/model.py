@@ -48,13 +48,16 @@ class BoltNet(nn.Module):
         num_shapes = self.encoder.num_shapes
         channels_point = self.encoder.channels_point
         concat_channels_point = self.encoder.concat_channels_point
-        self.decoder, _ = create_mlp_components(in_channels=(num_shapes + channels_point + concat_channels_point),
-                                          out_channels=[out_points, 0.2, out_points, 0.2, out_points],
+        self.decoder, _ = create_mlp_components(in_channels=3 * (num_shapes + channels_point + concat_channels_point),
+                                          out_channels=[out_points, 0.2, out_points * 2, 0.2, out_points * 3],
                                           classifier=True, dim=2, width_multiplier=1)
         self.decoder = nn.Sequential(*self.decoder)
+        self.flatten = nn.Flatten()
 
 
     def forward(self, x):
         x = self.encoder(x) 
+        x = x.reshape(x.size(0), 3 * (self.encoder.num_shapes + self.encoder.channels_point + self.encoder.concat_channels_point), 1)
         x = self.decoder(x)
+        x = x.reshape(x.size(0), -1, 3)
         return x

@@ -1,6 +1,7 @@
 import torch
 from model import BoltNet 
 import torch.optim as optim
+from loss import BoltLoss
 import sys
 import argparse
 import numpy as np
@@ -27,8 +28,8 @@ if __name__ == '__main__':
 
     model = BoltNet(num_classes, num_shapes, out_points=args.n_final_sample)
     model.to('cuda')
-    if os.path.exists('model.pth'):
-        model.load_state_dict(torch.load('model.pth'))
+    #if os.path.exists('model.pth'):
+    #    model.load_state_dict(torch.load('model.pth'))
 
     optimizer = optim.Adam(model.parameters(), lr=0.001) 
     progress_bar = tqdm(range(args.n_epochs), postfix={"Loss": 0})
@@ -37,7 +38,8 @@ if __name__ == '__main__':
 
     for epoch in progress_bar:
         model.train()
-        for i, data in tqdm(enumerate(data_loader), leave=False, total=len(data_loader), postfix={"Loss": 0}):
+        in_epoch_progress_bar = tqdm(enumerate(data_loader), leave=False, total=len(data_loader), postfix={"Loss": 0})
+        for i, data in in_epoch_progress_bar:
             optimizer.zero_grad()
             inputs, true_pc = data
             outputs = model(inputs)
@@ -45,7 +47,7 @@ if __name__ == '__main__':
             loss.backward()
             optimizer.step()
             losses.append(loss.item())
-            progress_bar.set_postfix({"Loss": loss.item()})
+            in_epoch_progress_bar.set_postfix({"Loss": loss.item()})
         sys.stdout.flush()
         sys.stderr.flush()
 
@@ -55,15 +57,3 @@ if __name__ == '__main__':
     json.dump({'losses': losses}, open('losses.json', 'w'))
 
     print("Finished training")
-
-    model.eval()
-    with torch.no_grad():
-        data, gt = next(iter(data_loader))
-        data = model(data)
-        pc = o3d.geometry.PointCloud()
-        pc.points = o3d.utility.Vector3dVector(data[0].cpu().numpy())
-        o3d.visualization.draw_geometries([pc])
-
-        pc = o3d.geometry.PointCloud()
-        pc.points = o3d.utility.Vector3dVector(gt[0].cpu().numpy())
-        o3d.visualization.draw_geometries([pc])
