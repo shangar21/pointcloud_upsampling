@@ -10,10 +10,11 @@ from bolt.visualize import visualize_numpy_pointcloud_o3d, visualize_point_cloud
 from tqdm import tqdm
 from bolt.utils import knn_smoothing, bilateral_smoothing
 import subprocess
+import time
 
 def initial_sample(point_cloud_path, n, visualize=False):
     point_cloud = np.load(point_cloud_path)
-    point_cloud_sample = point_cloud[np.random.choice(point_cloud.shape[0], 1024, replace=False), :]
+    point_cloud_sample = point_cloud[np.random.choice(point_cloud.shape[0], min(point_cloud.shape[0], 1024), replace=False), :]
     if visualize:
         visualize_numpy_pointcloud_o3d(point_cloud_sample)
     return point_cloud_sample
@@ -54,19 +55,32 @@ def bolt(point_cloud_source, **kwargs):
     n_final_sample = kwargs.get("n_final_sample", 2048)
     visualize = kwargs.get("visualize", False)
     smoothing_type = kwargs.get("smoothing_type", "bilateral")
-    random_sample = kwargs.get("random_sample", False)
+    random_sample = kwargs.get("random_sampling", False)
 
     point_cloud_sample = initial_sample(point_cloud_source, n_initial_sample, visualize=visualize)
+    octree_time = 0
+    start = 0
+    end = 0
 
     if random_sample:
         new_pts = random_sampling(point_cloud_sample, n_final_sample - n_initial_sample, visualize=visualize)
     else:
         N = int(np.ceil(n_final_sample / n_initial_sample)) - 1
+        start = time.time()
         new_pts = octree_initial(point_cloud_sample, N=N, visualize=visualize)
+        end = time.time()
+        octree_time = end - start
+        print("Time taken for octree sampling: ", end - start)
 
     if smoothing_type == "knn":
         point_cloud_sample = knn_smoothing(point_cloud_sample, new_pts, k=k_nearest_neighbours, visualize=visualize)
     elif smoothing_type == "bilateral":
+        start = time.time()
         point_cloud_sample = bilateral_smoothing(point_cloud_sample, new_pts, k=k_nearest_neighbours, sigma_d=sigma_d, sigma_n=sigma_n, n_iter=n_iter, visualize=visualize)
+        end = time.time()
+    if smoothing_type == "none":
+        point_cloud_sample = np.vstack((point_cloud_sample, new_pts)) 
+
+    print("Total time taken: ", end - start + octree_time)
 
     return point_cloud_sample

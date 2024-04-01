@@ -13,16 +13,17 @@ We then smooth $\mathcal{P}'$ with bilateral filtering. Bilateral filtering requ
 		\Require sparse point cloud ${P}$ with $n$ points, $n_{\text{up}}$ number of iterations required to get the desired number of points 
 		\Function{upsample}{{P}}
 		\State {T} \gets \Call{constructOctree}{{P}}
+		\State $P_n$ \gets \Call{EmptyPointCloud}{}
 		\For{$i \leq n_{\text{up}}$}
 			\For{$p \in P$}
 				\State parent \gets $p$.parent 
 				\State child \gets \Call{randomEmptyChild}{parent}
 				\State $p'$ \gets \Call{randomPointInside}{child.dimensions}
-				\State \Call{insert}{$p'$}
+				\State \Call{insert}{$p'$, $P_n$}
 			\EndFor
 		\EndFor
 		\State P \gets \Call{convertToPointCloud}{T}
-		\State \Call{bilateralSmooth}{P}
+		\State \Call{bilateralSmooth}{P, $P_n$}
 		\EndFunction
 	\end{algorithmic}
 \end{algorithm}
@@ -30,10 +31,10 @@ We then smooth $\mathcal{P}'$ with bilateral filtering. Bilateral filtering requ
 \begin{algorithm}[H]
 	\caption{Bilateral smoothing algorithm, borrowed heavily from \cite{3d_bilateral_filter_ipol}}
 	\begin{algorithmic}
-		\Require point cloud ${P}$ with $n$ points, $k$ neighbours, $\sigma_d$, $\sigma_n$
-		\Function{bilateralSmooth}{{P}}
-		\For{$p \in P$}
-			\State $\mathcal{N}_p$ \gets \Call{findNeighbours}{P, k}
+		\Require point cloud ${P}$ with $n$ points, $P_n$ new points, $k$ neighbours, $\sigma_d$, $\sigma_n$
+		\Function{bilateralSmooth}{{P}, $P_n$}
+		\For{$p \in P_n$}
+			\State $\mathcal{N}_p$ \gets \Call{findNeighbours}{P, k, p}
 			\State $\textbf{n}_p$ \gets \Call{computeUnitNormalToPlane}{$\mathcal{N}$}
 			\State $s_w$ \gets 0
 			\State $\delta_p$ \gets 0

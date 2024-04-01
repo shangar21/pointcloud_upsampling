@@ -51,6 +51,5 @@ def bilateral_smoothing(point_cloud, new_points, k=5, sigma_d=0.1, sigma_n=0.1, 
 
 
 def bilateral_smooth_cpp(point_cloud, new_points, k=5, sigma_d=0.1, sigma_n=0.1, n_iter=1):
-    print(point_cloud)
     result = bss.bilateral_smooth(point_cloud, new_points, k, sigma_d, sigma_n, n_iter)
     return np.vstack((point_cloud, result))

@@ -41,6 +41,7 @@ class OctreeNode():
 class Octree():
     def __init__(self):
         self.tree = None
+        self.max_depth = 64
 
     def get_direction(self, point, center):
         direction = 0
@@ -157,3 +158,8 @@ class Octree():
              return self.knn_points(point, np.array(points), k)
         else:
             return self.get_k_nearest_neighbours(node.children[direction], point, k)
+
+    def get_height(self, node):
+        if node.is_leaf:
+            return 0
+        return 1 + max([self.get_height(child) for child in node.children.values()])

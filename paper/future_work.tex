@@ -1,0 +1,9 @@
+Since this method does not require any parameters, and is very light it is suitable for real-time applications.
+One issue however is that it is slower than methods such as MLS. 
+This is due to the overhead in python and lack of concurrency.
+Thus, one potential future work is to implement this method in C++ to reduce the overhead since in this work the bilateral filter was already implemented in C++.
+Further, this method can benefit greatly from concurrency.
+There are numerous works that parallelize the creation of octree structures \cite{paralell-octree}. 
+Using an octree one can also parallelize the bilateral filter as well as in \cite{3d_bilateral_filter_ipol}.
+With both of these optimizations, the method can be made faster and more suitable for real-time applications.
+%Further, with works such as PVCNN \cite{pvcnn} the use of voxelization can also potentially be used to improve existing deep methods. 

@@ -1,7 +1,8 @@
-Experiments were done mostly with the ShapeNet dataset \cite{shapenet}, which is a large dataset of 3D models. A random set of either 1024 or 2048 point clouds were sampled and then upscaled to double or quadruple the number of points.
+Experiments were done mostly with the ShapeNet dataset \cite{shapenet}, which is a large dataset of 3D models. 
+A random set of either 1024 point clouds were sampled and then upscaled to double or 2048 points.
+We then compare use some evaluation metrics with the ground truth to see how well our method performs in a quantitative manner.
+In the appendix we highlight the qualitative results of our method compared to other methods used in this paper.
 
-At this stage only qualitative results are shown, and quantitative results will be shown in the final paper. 
-Further, comparisons with other non-deep learning based methods, as well control studies comparing our method of placing with an octree and then smoothing to randomly placing points and then smoothing, will be done in the final paper.
 
 \subsection{Evaluation Metrics}
 
@@ -18,50 +19,162 @@ Where:
 
 $$h(A, B) = \max_{a \in A} \min_{b \in B} \norm{a - b}$$
 
-\subsection{Preliminary Results}
+\subsection{Comparison with Deep Methods}
 
-In this subsection we qualitatively compare results with octree upsampling only, and no smoothing, as well as both octree sampling and bilateral smoothing.
+We will compare our method with deep learning based method PU-GCN\cite{PU-GCN}.
+First, an analysis of the computational cost of using PU-GCN will be done. 
+When experimenting with an Nvidia 4090, we found that the PU-GCN took 10GB of memory.
+This comparison was done with the PU1K dataset. Each point cloud was a sample of 256 points and was upsampled to 1024 points. 
 
-\begin{figure*}[!ht]
-	\centering
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{1024_no_upsampling.png}
-		\caption{Original point cloud, with 1024 points}
-	\end{subfigure}
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[width=0.65\textwidth]{./2048_octree_no_smoothing.png}
-		\caption{Upsampled point cloud, with 2048 points using only octree and no smoothing}
-	\end{subfigure}
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[width=0.65\textwidth]{./4096_octree_no_smoothing.png}
-		\caption{Upsampled point cloud, with 4096 points using only octree and no smoothing}
-	\end{subfigure}	
-	\caption{A comparison of the original point cloud and the upsampled point cloud using only octree and no smoothing.}
-	\label{fig:no_smoothing}
-\end{figure*}
-
-\begin{figure*}[!ht]
-	\centering
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{1024_no_upsampling.png}
-		\caption{Original point cloud, with 1024 points}
-	\end{subfigure}
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[width=0.65\textwidth]{./2048_octree_bilateral}
-		\caption{Upsampled point cloud, with 2048 points using only octree and bilateral smoothing}
-	\end{subfigure}
-	\begin{subfigure}{0.3\textwidth}
-		\centering
-		\includegraphics[width=0.65\textwidth]{./4096_octree_bilateral.png}
-		\caption{Upsampled point cloud, with 4096 points using only octree and no smoothing}
-	\end{subfigure}	
-	\caption{A comparison of the original point cloud and the upsampled point cloud using only octree and bilateral smoothing.}
-	\label{fig:no_smoothing}
-\end{figure*}
+\begin{table}[H]
+\centering
+\begin{tabular}{ccc}
+	& Chamfer distance $\times 10^3$ &\\
+	\hline
+	class & PU-GCN & Ours \\
+	\hline
+	eight & \textbf{36.5} & {42.5} \\ 
+	elephant & {} & {37.8} \\
+	elk & {} & {44.8} \\  
+	fandisk & {} & {38.3} \\  
+	genus3 & {} & {49.4}  \\
+\end{tabular}
+\caption{Comparison of our method with PU-GCN with chamfer distance $\times 10^3$. Note that lower is better}
+\end{table}
 
 
+\begin{table}[H]
+\centering
+\begin{tabular}{ccc}
+	& Chamfer distance $\times 10^3$ &\\
+	\hline
+	class & PU-GCN & Ours \\
+	\hline
+	eight & \textbf{55.1} & {221.3} \\ 
+	elephant &  \textbf{}& {122.6} \\
+	elk & {} & {52} \\  
+	fandisk & {} & {169.3} \\  
+	genus3 & {} & {378.6}  \\
+\end{tabular}
+\caption{Comparison of our method with PU-GCN with chamfer distance $\times 10^3$. Note that lower is better}
+\end{table}
+
+\subsection{Comparison with Non-Deep Methods}
+
+We compared our results with MLS, which is a non-deep learning based method of upsampling point clouds using local surface fitting.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ccc}
+	& Chamfer distance $\times 10^3$ &\\
+	\hline
+	class & MLS & Ours \\
+	\hline
+	plane & \textbf{14.8} & 15.8 \\ 
+	helmets & \textbf{26.7} & 29 \\
+	cap & \textbf{22.4} & 24.4 \\  
+	car & \textbf{28.6} & 31 \\  
+	headset & {25.3} & \textbf{23.8}  \\
+\end{tabular}
+\caption{Comparison of our method with MLS with chamfer distance $\times 10^3$. Note that lower is better}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ccc}
+	& Hausdroff distance $\times 10^3$ &\\
+	\hline
+	class & MLS & Ours \\
+	\hline
+	plane & 282.9 & \textbf{80.5} \\ 
+helmets & 454.8 &  \textbf{182.2}\\
+cap & \textbf{150.2} & 156.3 \\ 
+car & 75.3 & \textbf{73.5} \\  
+headset & 171.3 & \textbf{166.5} \\
+\end{tabular}
+\caption{Comparison of our method with MLS with Hausdroff distance $\times 10^3$. Note that lower is better}
+\end{table}
+
+In general, our method performed better than MLS in terms of the Hausdroff distance, but worse in terms of the Chamfer distance.
+In some cases, our method performed better in both metrics, such as the headset class.
+In terms of execution time, we found that our method was also slower than MLS, taking 0.5 seconds to run in total compared to 0.2 seconds for MLS.
+Note however that the MLS implementation was written entirely in C++. Our method only implements the bilateral filter in C++ and the rest in Python. 
+This difference in overhead may account for the difference in execution time.
+
+\subsection{Comparison of Other Smoothing Methods}
+
+We compared our method with other smoothing methods, such as the bilateral filter and a K-nearest neighbors based method as well as no smoothing and just the octree sampling.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{cccc}
+	&  & Chamfer distance $\times 10^3$ &\\
+	\hline
+	class & KNN & Bilateral & None\\
+	\hline
+	plane & {16.2} & \textbf{15.8} & {16} \\ 
+	helmets & {29.3} & \textbf{29} & {29.8} \\
+	cap & {24.5} & \textbf{24.4} & {25.5}\\  
+	car & {31.3} & \textbf{31} & \textbf{31}\\  
+	headset & {24.4} & \textbf{23.8} & {24.2} \\
+\end{tabular}
+\caption{Comparison of our method with MLS with chamfer distance $\times 10^3$. Note that lower is better}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{cccc}
+	&  & Hausdroff distance $\times 10^3$ &\\
+	\hline
+	class & KNN & Bilateral & None\\
+	\hline
+	plane & 81.3 & {80.5} & \textbf{78.4} \\ 
+	helmets & 186.2 &  {182.2} & \textbf{182.1}\\
+	cap & \textbf{149.4} & {156.3} & {155.6}\\ 
+	car & \textbf{72.1} & {73.5} & {74}\\  
+	headset & 168.3 & \textbf{166.5} & \textbf{166.5}\\
+\end{tabular}
+\caption{Comparison of our method with MLS with Hausdroff distance $\times 10^3$. Note that lower is better}
+\end{table}
+
+In general, our method performed better than the KNN method in terms of both the Chamfer and Hausdroff distance, with the exception of the cap and car classes. 
+Bilateral also performed better than no smoothing in terms of Chamfer distance, but worse in terms of the Hausdroff distance.
+
+\subsection{Comparison of Different Sampling Methods}
+
+In this subsection we compare our octree sampling method with random sampling, both cases using bilateral smoothing.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ccc}
+	& Chamfer distance $\times 10^3$ &\\
+	\hline
+	class & Random & Octree \\
+	\hline
+	plane & {49.1} & \textbf{15.8} \\ 
+	helmets & {40} & \textbf{29} \\
+	cap & {38.7} & \textbf{24.4} \\  
+	car & {36.7} & \textbf{31} \\  
+	headset & {46} & \textbf{23.8}  \\
+\end{tabular}
+\caption{Comparison of our method with random sampling with chamfer distance $\times 10^3$. Note that lower is better}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ccc}
+	& Hausdroff distance $\times 10^3$ &\\
+	\hline
+	class & Random & Octree \\
+	\hline
+	plane & 86.2 & \textbf{80.5} \\
+	helmets & \textbf{172.4} &  {182.2}\\
+cap & \textbf{153.4} & {156.3} \\
+car & {74.6} & \textbf{73.5} \\
+headset & 178.3 & \textbf{166.5} \\
+\end{tabular}
+\caption{Comparison of our method with random sampling with Hausdroff distance $\times 10^3$. Note that lower is better}
+\end{table}
+
+Clearly, the octree sampling method outperforms the random sampling method in terms of Chamfer distance, but slightly better in terms of the Hausdroff distance.
+This shows that using an octree to voxelize and add points nearby points is a better method than randomly sampling points.

@@ -1,5 +1,5 @@
 %! TeX program = lualatex
-\documentclass[fleqn, twocolumn]{article}
+\documentclass[fleqn]{article}
 \usepackage{amsfonts}
 \usepackage{bm}
 \usepackage{array, makecell}
@@ -62,6 +62,7 @@
 	%We evaluate BOLT on various point clouds and compare it with the current state-of-the-art methods and show competitive results.
 \end{abstract}
 
+\begin{multicols}{2}
 \section{Introduction}
 
 \input{introduction}
@@ -82,11 +83,24 @@
 
 \input{experiments}
 
+\section{Future Work}
+
+\input{future_work}
+
+\section{Conclusion}
+
+\input{conclusion}
 %\section{Conclusion}
 %
 %\input{conclusion}
-\pagebreak
 \bibliographystyle{plain}
 \bibliography{refs}
+
+\end{multicols}
+\pagebreak
+
+\section{Appendix}
+
+\input{appendix}
 
 \end{document}

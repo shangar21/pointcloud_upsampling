@@ -1,0 +1,317 @@
+In this appendix, we provide additional details on the experiments conducted in this paper.
+We also provide some qualitative results of our method compared to the other methods used in this paper.
+To set up the rest, the ground truths are provided in the following figure:
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/ground_truths/plane.png}
+		\caption{Plane}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/ground_truths/helmet.png}
+		\caption{Helmet}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/ground_truths/cap.png}
+		\caption{Cap}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/ground_truths/car.png}
+		\caption{Car}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/ground_truths/headset.png}
+		\caption{Headset}
+	\end{subfigure}
+\end{figure}
+
+\subsection{Comparison of Different smoothing methods}
+
+In this subsection we qualitatively compare bilateral filtering with KNN filtering and no filtering.
+
+Bilateral filtering:
+
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/plane.png}
+		\caption{BOLT plane}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/helmet.png}
+		\caption{BOLT helmet}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/cap.png}
+		\caption{BOLT cap}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/car.png}
+		\caption{BOLT car}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/headset.png}
+		\caption{BOLT headset}
+	\end{subfigure}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/knn/plane.png}
+		\caption{KNN plane}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/knn/helmet.png}
+		\caption{KNN helmet}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/knn/cap.png}
+		\caption{KNN cap}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/knn/car.png}
+		\caption{KNN car}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/knn/headset.png}
+		\caption{KNN headset}
+	\end{subfigure}
+\end{figure}
+
+No filtering:
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/octree/plane_4096.png}
+		\caption{No filtering plane}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/octree/helmet_4096.png}
+		\caption{No filtering helmet}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/octree/cap_4096.png}
+		\caption{No filtering cap}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/octree/car_4096.png}
+		\caption{No filtering car}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/octree/headset_4096.png}
+		\caption{No filtering headset}
+	\end{subfigure}
+\end{figure}
+
+
+
+\subsection{Comparison with MLS}
+
+In this paper, the MLS implementation was written entirely in C++ using the Point Cloud Library (PCL) \cite{pcl}.
+On average the execution time of MLS was 0.2 seconds, while our method took 0.5 seconds.
+We also ran the experiments with a nearest neighbours value of 20, and polynomial order of 2. 
+Below are qualitative results of our method compared to MLS.
+The C++ implementation of MLS upsamples to a very large number of points, thus to compare we sampled the desired number of points from the MLS output to compare with ours.
+
+The result of the raw MLS output without sampling points:
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/mls/plane_all.png}
+		\caption{MLS plane}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/mls/helmet_all.png}
+		\caption{MLS helmet}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/mls/cap_all.png}
+		\caption{MLS cap}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/mls/car_all.png}
+		\caption{MLS car}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/mls/headset_all.png}
+		\caption{MLS headset}
+	\end{subfigure}
+\end{figure}
+
+The result of the MLS output with sampling points:
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/mls/plane_4096.png}
+		\caption{MLS plane}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/mls/helmet_4096.png}
+		\caption{MLS helmet}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/mls/cap_4096.png}
+		\caption{MLS cap}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/mls/car_4096.png}
+		\caption{MLS car}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/mls/headset_4096.png}
+		\caption{MLS headset}
+	\end{subfigure}
+\end{figure}
+
+The BOLT results as a comparison:
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/plane.png}
+		\caption{BOLT plane}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/helmet.png}
+		\caption{BOLT helmet}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/cap.png}
+		\caption{BOLT cap}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/car.png}
+		\caption{BOLT car}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/headset.png}
+		\caption{BOLT headset}
+	\end{subfigure}
+\end{figure}
+
+From a qualitative perspective, MLS does look better except for some cases like the car. It tends to preserve the roundness of objects better than BOLT.
+
+\subsection{Comparison with Other Sampling Methods}
+
+Here we compare our octree sampling method with random sampling, both cases using bilateral smoothing.
+
+Octree sampling:
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/plane.png}
+		\caption{BOLT plane}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/helmet.png}
+		\caption{BOLT helmet}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/cap.png}
+		\caption{BOLT cap}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/car.png}
+		\caption{BOLT car}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/headset.png}
+		\caption{BOLT headset}
+	\end{subfigure}
+\end{figure}
+
+Random sampling:
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/random/plane.png}
+		\caption{Random plane}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/random/helmet.png}
+		\caption{Random helmet}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/random/cap.png}
+		\caption{Random cap}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/random/car.png}
+		\caption{Random car}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/random/headset.png}
+		\caption{Random headset}
+	\end{subfigure}
+\end{figure}
+
+\subsection{Deep Learning Comparison}
+
+In this section we show the outputs of the deep learning method used in this paper, PU-GCN \cite{PU-GCN}. 
+In this case we used the pretrained model provided by the authors of the paper.
+We also instead of starting from 1024 points, we started from 256 points and upsampled to 1024 points.
+Also instead of shapenet, we used the same dataset as in the paper, the PU1K dataset.
+
+The deep learning method results:
+
+\begin{figure}[H]
+	\centering 
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\textwidth]{./images/pu-gcn/eight.png}
+		\caption{Eight}
+	\end{subfigure}
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\textwidth]{./images/pu-gcn/elephant.png}
+		\caption{Elephant}
+	\end{subfigure}
+\end{figure}
+\begin{figure}[H]
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\textwidth]{./images/pu-gcn/elk.png}
+		\caption{Elk}
+	\end{subfigure}
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\textwidth]{./images/pu-gcn/fandisk.png}
+		\caption{Fandisk}
+	\end{subfigure}
+\end{figure}
+\begin{figure}[H]
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[width=\textwidth]{./images/pu-gcn/genus3.png}
+		\caption{Genus3}
+	\end{subfigure}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/eight.png}
+		\caption{BOLT eight}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/elephant.png}
+		\caption{BOLT elephant}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/elk.png}
+		\caption{BOLT elk}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/fandisk.png}
+		\caption{BOLT fandisk}
+	\end{subfigure}
+	\begin{subfigure}{0.18\textwidth}
+		\includegraphics[width=\textwidth]{./images/bolt/genus3.png}
+		\caption{BOLT genus3}
+	\end{subfigure}
+\end{figure}
+
+
