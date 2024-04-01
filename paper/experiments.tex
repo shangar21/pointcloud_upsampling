@@ -4,7 +4,7 @@ We then compare use some evaluation metrics with the ground truth to see how wel
 In the appendix we highlight the qualitative results of our method compared to other methods used in this paper.
 
 
-\subsection{Evaluation Metrics}
+\subsection{Evaluation}
 
 We will eventually evaluate our model using the Chamfer distance and Hausdroff distance as they are common metrics used in point cloud upsampling, and try to compare to other parameter free works as well as deep learning based methods.
 The Chamfer distance is a measure of how different 2 shapes are and is defined as the following:
@@ -18,6 +18,10 @@ $$ H(A, B) = \max(h(A, B), h(B, A))\label{eq:hausdroff}$$
 Where:
 
 $$h(A, B) = \max_{a \in A} \min_{b \in B} \norm{a - b}$$
+
+In terms of comparisons, we perform comparisons with MLS as a baseline for another non-deep learning based method, as well as with PU-GCN as a deep learning based method.
+We also see how our method performs compared to other smoothing methods such as KNN and no smoothing, as well as different sampling methods such as random sampling and octree sampling.
+This is to show that our choices in smoothing and sampling are the best in this context.
 
 \subsection{Comparison with Deep Methods}
 
@@ -100,6 +104,12 @@ In some cases, our method performed better in both metrics, such as the headset 
 In terms of execution time, we found that our method was also slower than MLS, taking 0.5 seconds to run in total compared to 0.2 seconds for MLS.
 Note however that the MLS implementation was written entirely in C++. Our method only implements the bilateral filter in C++ and the rest in Python. 
 This difference in overhead may account for the difference in execution time.
+
+A worse chamfer distance but better hausdroff distance indicates that our method is better at preserving global shape, but worse at preserving local shape.
+It also implies that our method is better at preserving the overall structure of the point cloud, but worse at preserving the details, and also implies that our method is less sensitive to outliers than MLS.
+This sensitivity to outliers for MLS can be reflected in the car example in the appendix, where the MLS method has few points that are very far from the shape, where as our method does not have this issue.
+
+Overall depending on the task at hand, one may choose to use MLS or our method. If the task requires preserving the overall structure of the point cloud, our method is better. If the task requires preserving the details of the point cloud, MLS is better.
 
 \subsection{Comparison of Other Smoothing Methods}
 
