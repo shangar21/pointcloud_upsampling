@@ -23,46 +23,6 @@ In terms of comparisons, we perform comparisons with MLS as a baseline for anoth
 We also see how our method performs compared to other smoothing methods such as KNN and no smoothing, as well as different sampling methods such as random sampling and octree sampling.
 This is to show that our choices in smoothing and sampling are the best in this context.
 
-\subsection{Comparison with Deep Methods}
-
-We will compare our method with deep learning based method PU-GCN\cite{PU-GCN}.
-First, an analysis of the computational cost of using PU-GCN will be done. 
-When experimenting with an Nvidia 4090, we found that the PU-GCN took 10GB of memory.
-This comparison was done with the PU1K dataset. Each point cloud was a sample of 256 points and was upsampled to 1024 points. 
-
-\begin{table}[H]
-\centering
-\begin{tabular}{ccc}
-	& Chamfer distance $\times 10^3$ &\\
-	\hline
-	class & PU-GCN & Ours \\
-	\hline
-	eight & \textbf{36.5} & {42.5} \\ 
-	elephant & {} & {37.8} \\
-	elk & {} & {44.8} \\  
-	fandisk & {} & {38.3} \\  
-	genus3 & {} & {49.4}  \\
-\end{tabular}
-\caption{Comparison of our method with PU-GCN with chamfer distance $\times 10^3$. Note that lower is better}
-\end{table}
-
-
-\begin{table}[H]
-\centering
-\begin{tabular}{ccc}
-	& Chamfer distance $\times 10^3$ &\\
-	\hline
-	class & PU-GCN & Ours \\
-	\hline
-	eight & \textbf{55.1} & {221.3} \\ 
-	elephant &  \textbf{}& {122.6} \\
-	elk & {} & {52} \\  
-	fandisk & {} & {169.3} \\  
-	genus3 & {} & {378.6}  \\
-\end{tabular}
-\caption{Comparison of our method with PU-GCN with chamfer distance $\times 10^3$. Note that lower is better}
-\end{table}
-
 \subsection{Comparison with Non-Deep Methods}
 
 We compared our results with MLS, which is a non-deep learning based method of upsampling point clouds using local surface fitting.
@@ -188,3 +148,50 @@ headset & 178.3 & \textbf{166.5} \\
 
 Clearly, the octree sampling method outperforms the random sampling method in terms of Chamfer distance, but slightly better in terms of the Hausdroff distance.
 This shows that using an octree to voxelize and add points nearby points is a better method than randomly sampling points.
+
+\subsection{Comparison with Deep Methods}
+
+We will compare our method with deep learning based method PU-GCN\cite{PU-GCN}.
+First, an analysis of the computational cost of using PU-GCN will be done. 
+When experimenting with an Nvidia 4090, we found that the PU-GCN took 10GB of memory.
+This comparison was done with the PU1K dataset. Each point cloud was a sample of 256 points and was upsampled to 1024 points. 
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ccc}
+	& Chamfer distance $\times 10^3$ &\\
+	\hline
+	class & PU-GCN & Ours \\
+	\hline
+	eight & {64} & \textbf{42.5} \\ 
+	elephant & {59.4} & \textbf{37.8} \\
+	elk & {69.7} & \textbf{44.8} \\  
+	fandisk & {58.8} & \textbf{38.3} \\  
+	genus3 & {81.9} & \textbf{49.4}  \\
+\end{tabular}
+\caption{Comparison of our method with PU-GCN with chamfer distance $\times 10^3$. Note that lower is better}
+\end{table}
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{ccc}
+	& Chamfer distance $\times 10^3$ &\\
+	\hline
+	class & PU-GCN & Ours \\
+	\hline
+	eight & \textbf{96.1} & {221.3} \\ 
+	elephant &  \textbf{74.1}& {122.6} \\
+	elk & {94.6} & \textbf{52} \\  
+	fandisk & \textbf{86} & {169.3} \\  
+	genus3 & \textbf{127.1} & {378.6}  \\
+\end{tabular}
+\caption{Comparison of our method with PU-GCN with chamfer distance $\times 10^3$. Note that lower is better}
+\end{table}
+
+Our method does better in terms of the Chamfer distance, but worse in terms of the Hausdroff distance.
+This is an indication that we are better at preserving local shape, but worse at preserving global shape.
+This is also an indication that the PU-GCN method is less sensitive to outliers than our method.
+Thus, depending on the task at hand, one may choose to use PU-GCN or our method.
+
+
