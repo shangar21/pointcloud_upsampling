@@ -153,7 +153,13 @@ This shows that using an octree to voxelize and add points nearby points is a be
 
 We will compare our method with deep learning based method PU-GCN\cite{PU-GCN}.
 First, an analysis of the computational cost of using PU-GCN will be done. 
-When experimenting with an Nvidia 4090, we found that the PU-GCN took 10GB of memory.
+When experimenting with an Nvidia 4090, we found that the PU-GCN took 10GB of memory during training.
+We trained the PU-GCN model for 10 epochs, which took 2 hours to train.
+The original paper trained the model for 100 epochs. 
+This is a significant amount of time and memory, and is a disadvantage of the PU-GCN method.
+We would also like to note that the numbers below are not directly comparable, as the PU-GCN from the paper was trained for 100 epochs, and we only trained for 10 epochs.
+In the PU-GCN paper they authors claimed a chamfer distance of $\sim 0.5 \times 10^3$ and a Hausdroff distance of $\sim 1 \times 10^3$.
+Both of these numbers are significantly better than our method, but this is likely due to the fact that we only trained for 10 epochs, and the PU-GCN was trained for 100 epochs.
 This comparison was done with the PU1K dataset. Each point cloud was a sample of 256 points and was upsampled to 1024 points. 
 
 \begin{table}[H]
