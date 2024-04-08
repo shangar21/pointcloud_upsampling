@@ -3,21 +3,18 @@ import argparse
 import numpy as np
 import open3d as o3d
 import subprocess
-from bolt.visualize import visualize_o3d_pointcloud_o3d
+from bolt.visualize import visualize_o3d_pointcloud_o3d, visualize_numpy_pointcloud_o3d
+from bolt.distances import chamfer_distance, hausdorff_distance
 
-'''
-todo:
-- add chamfer distance
-- add hausdorff distances
-- CHANGE BILATERAL FILTERING TO ONLY SMOOTH THE POINTS THAT ARE NOT IN THE ORIGINAL POINT CLOUD!!!
-
-'''
-def mls_sampling(point_cloud_sample_path, k, polynomial_order, output_path, visualize=False):
+def mls_sampling(point_cloud_sample_path, k, polynomial_order, output_path, visualize=False, n_final_sample=1024):
     subprocess.run(["pcl_src/build/mls", point_cloud_sample_path, str(k), str(polynomial_order), output_path])
     point_cloud_sample = o3d.io.read_point_cloud(output_path)
     if visualize:
         visualize_o3d_pointcloud_o3d(point_cloud_sample)
     point_cloud_sample = np.asarray(point_cloud_sample.points)
+    point_cloud_sample = point_cloud_sample[np.random.choice(point_cloud_sample.shape[0], min(point_cloud_sample.shape[0], n_final_sample), replace=False), :]
+    if visualize:
+        visualize_numpy_pointcloud_o3d(point_cloud_sample)
     print("MLS shape: ", point_cloud_sample.shape)
     return point_cloud_sample 
 
@@ -46,6 +43,5 @@ if __name__ == "__main__":
     if args.mls:
         point_cloud = np.load(source_path)
         o3d.io.write_point_cloud("tmp/pointcloud.pcd", o3d.geometry.PointCloud(o3d.utility.Vector3dVector(point_cloud)))
-        point_cloud = mls_sampling("tmp/pointcloud.pcd", 20, 2, "tmp/mls.pcd", visualize=args.visualize)
+        point_cloud = mls_sampling("tmp/pointcloud.pcd", 20, 2, "tmp/mls.pcd", visualize=args.visualize, n_final_sample=args.n_final_sample)
         np.save(args.output_path, point_cloud)
-

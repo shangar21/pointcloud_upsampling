@@ -6,14 +6,14 @@ In the appendix we highlight the qualitative results of our method compared to o
 
 \subsection{Evaluation}
 
-We will eventually evaluate our model using the Chamfer distance and Hausdroff distance as they are common metrics used in point cloud upsampling, and try to compare to other parameter free works as well as deep learning based methods.
+We will eventually evaluate our model using the Chamfer distance and Hausdorff distance as they are common metrics used in point cloud upsampling, and try to compare to other parameter free works as well as deep learning based methods.
 The Chamfer distance is a measure of how different 2 shapes are and is defined as the following:
 
 $$ C(P, Q) = \dfrac{1}{|P|} \sum\limits_{p \in P} \min_{q \in Q} \norm{p - q}^2 +  \dfrac{1}{|Q|} \sum\limits_{q \in Q} \min_{p \in P} \norm{p - q}^2 \label{eq:chamfer}$$
 
-The Hausdroff distance is a measure of how similar 2 sets are. It is defined as the following:
+The Hausdorff distance is a measure of how similar 2 sets are. It is defined as the following:
 
-$$ H(A, B) = \max(h(A, B), h(B, A))\label{eq:hausdroff}$$
+$$ H(A, B) = \max(h(A, B), h(B, A))\label{eq:hausdorff}$$
 
 Where:
 
@@ -46,7 +46,7 @@ We compared our results with MLS, which is a non-deep learning based method of u
 \begin{table}[H]
 \centering
 \begin{tabular}{ccc}
-	& Hausdroff distance $\times 10^3$ &\\
+	& Hausdorff distance $\times 10^3$ &\\
 	\hline
 	class & MLS & Ours \\
 	\hline
@@ -56,16 +56,16 @@ cap & \textbf{150.2} & 156.3 \\
 car & 75.3 & \textbf{73.5} \\  
 headset & 171.3 & \textbf{166.5} \\
 \end{tabular}
-\caption{Comparison of our method with MLS with Hausdroff distance $\times 10^3$. Note that lower is better}
+\caption{Comparison of our method with MLS with Hausdorff distance $\times 10^3$. Note that lower is better}
 \end{table}
 
-In general, our method performed better than MLS in terms of the Hausdroff distance, but worse in terms of the Chamfer distance.
+In general, our method performed better than MLS in terms of the Hausdorff distance, but worse in terms of the Chamfer distance.
 In some cases, our method performed better in both metrics, such as the headset class.
 In terms of execution time, we found that our method was also slower than MLS, taking 0.5 seconds to run in total compared to 0.2 seconds for MLS.
 Note however that the MLS implementation was written entirely in C++. Our method only implements the bilateral filter in C++ and the rest in Python. 
 This difference in overhead may account for the difference in execution time.
 
-A worse chamfer distance but better hausdroff distance indicates that our method is better at preserving global shape, but worse at preserving local shape.
+A worse chamfer distance but better hausdorff distance indicates that our method is better at preserving global shape, but worse at preserving local shape.
 It also implies that our method is better at preserving the overall structure of the point cloud, but worse at preserving the details, and also implies that our method is less sensitive to outliers than MLS.
 This sensitivity to outliers for MLS can be reflected in the car example in the appendix, where the MLS method has few points that are very far from the shape, where as our method does not have this issue.
 
@@ -94,7 +94,7 @@ We compared our method with other smoothing methods, such as the bilateral filte
 \begin{table}[H]
 \centering
 \begin{tabular}{cccc}
-	&  & Hausdroff distance $\times 10^3$ &\\
+	&  & Hausdorff distance $\times 10^3$ &\\
 	\hline
 	class & KNN & Bilateral & None\\
 	\hline
@@ -104,11 +104,11 @@ We compared our method with other smoothing methods, such as the bilateral filte
 	car & \textbf{72.1} & {73.5} & {74}\\  
 	headset & 168.3 & \textbf{166.5} & \textbf{166.5}\\
 \end{tabular}
-\caption{Comparison of our method with MLS with Hausdroff distance $\times 10^3$. Note that lower is better}
+\caption{Comparison of our method with MLS with Hausdorff distance $\times 10^3$. Note that lower is better}
 \end{table}
 
-In general, our method performed better than the KNN method in terms of both the Chamfer and Hausdroff distance, with the exception of the cap and car classes. 
-Bilateral also performed better than no smoothing in terms of Chamfer distance, but worse in terms of the Hausdroff distance.
+In general, our method performed better than the KNN method in terms of both the Chamfer and Hausdorff distance, with the exception of the cap and car classes. 
+Bilateral also performed better than no smoothing in terms of Chamfer distance, but worse in terms of the Hausdorff distance.
 
 \subsection{Comparison of Different Sampling Methods}
 
@@ -133,7 +133,7 @@ In this subsection we compare our octree sampling method with random sampling, b
 \begin{table}[H]
 \centering
 \begin{tabular}{ccc}
-	& Hausdroff distance $\times 10^3$ &\\
+	& Hausdorff distance $\times 10^3$ &\\
 	\hline
 	class & Random & Octree \\
 	\hline
@@ -143,10 +143,10 @@ cap & \textbf{153.4} & {156.3} \\
 car & {74.6} & \textbf{73.5} \\
 headset & 178.3 & \textbf{166.5} \\
 \end{tabular}
-\caption{Comparison of our method with random sampling with Hausdroff distance $\times 10^3$. Note that lower is better}
+\caption{Comparison of our method with random sampling with Hausdorff distance $\times 10^3$. Note that lower is better}
 \end{table}
 
-Clearly, the octree sampling method outperforms the random sampling method in terms of Chamfer distance, but slightly better in terms of the Hausdroff distance.
+Clearly, the octree sampling method outperforms the random sampling method in terms of Chamfer distance, but slightly better in terms of the Hausdorff distance.
 This shows that using an octree to voxelize and add points nearby points is a better method than randomly sampling points.
 
 \subsection{Comparison with Deep Methods}
@@ -157,32 +157,15 @@ When experimenting with an Nvidia 4090, we found that the PU-GCN took 10GB of me
 We trained the PU-GCN model for 10 epochs, which took 2 hours to train.
 The original paper trained the model for 100 epochs. 
 This is a significant amount of time and memory, and is a disadvantage of the PU-GCN method.
-We would also like to note that the numbers below are not directly comparable, as the PU-GCN from the paper was trained for 100 epochs, and we only trained for 10 epochs.
-In the PU-GCN paper they authors claimed a chamfer distance of $\sim 0.5 \times 10^3$ and a Hausdroff distance of $\sim 1 \times 10^3$.
-Both of these numbers are significantly better than our method, but this is likely due to the fact that we only trained for 10 epochs, and the PU-GCN was trained for 100 epochs.
+In the PU-GCN paper they authors claimed a chamfer distance of $\sim 0.5 \times 10^3$ and a Hausdorff distance of $\sim 1 \times 10^3$.
+This is much lower than our method, but the computational cost is much higher.
+This is also much lower than what we found in our experiments but is likely due to the fact that we only trained for 10 epochs.
 This comparison was done with the PU1K dataset. Each point cloud was a sample of 256 points and was upsampled to 1024 points. 
 
 \begin{table}[H]
 \centering
 \begin{tabular}{ccc}
-	& Chamfer distance $\times 10^3$ &\\
-	\hline
-	class & PU-GCN & Ours \\
-	\hline
-	eight & {64} & \textbf{42.5} \\ 
-	elephant & {59.4} & \textbf{37.8} \\
-	elk & {69.7} & \textbf{44.8} \\  
-	fandisk & {58.8} & \textbf{38.3} \\  
-	genus3 & {81.9} & \textbf{49.4}  \\
-\end{tabular}
-\caption{Comparison of our method with PU-GCN with chamfer distance $\times 10^3$. Note that lower is better}
-\end{table}
-
-
-\begin{table}[H]
-\centering
-\begin{tabular}{ccc}
-	& Chamfer distance $\times 10^3$ &\\
+	& Hausdorff $\times 10^3$ &\\
 	\hline
 	class & PU-GCN & Ours \\
 	\hline
@@ -195,9 +178,7 @@ This comparison was done with the PU1K dataset. Each point cloud was a sample of
 \caption{Comparison of our method with PU-GCN with chamfer distance $\times 10^3$. Note that lower is better}
 \end{table}
 
-Our method does better in terms of the Chamfer distance, but worse in terms of the Hausdroff distance.
-This is an indication that we are better at preserving local shape, but worse at preserving global shape.
-This is also an indication that the PU-GCN method is less sensitive to outliers than our method.
-Thus, depending on the task at hand, one may choose to use PU-GCN or our method.
+Our method does much worse in terms of the Hausdorff distance.
+However, the computational cost of our method is much lower than PU-GCN.
 
 
